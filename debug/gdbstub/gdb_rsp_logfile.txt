@@ -1,0 +1,26 @@
+
+w +$qSupported:multiprocess+;qRelocInsn+#2a
+r +$swbreak+;hwbreak+;PacketSize=255#6b
+w +$Hg0#df
+r +$#00
+w +$?#3f
+r +$T05#b9
+w +$Hc-1#09
+r +$#00
+w +$qC#b4
+r +$#00
+w +$qAttached#8f
+r +$#00
+w +$qOffsets#4b
+r +$#00
+w +$g#67
+r +$2472214060faff3f00261040020000009805004074c0ff3f9805004010480f0000c0ff3f0000000044280f0074c1ff3f3400000034000000b098fe3f60faff3f8b2710400b00000000000000fada8cc20000000020000000#54
+w +$qSymbol::#5b
+r +$#00
+w +$qTStatus#49
+r +$#00
+w +
+c info break 1
+c quit
+w $qTStatus#49
+End of log
