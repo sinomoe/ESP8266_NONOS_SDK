@@ -13,6 +13,12 @@
 //[6]0 1 2 3 ... 127	
 //[7]0 1 2 3 ... 127 	
 
+/******************************************************************************
+ * FunctionName : IIC_Start
+ * Description  : I2C start signal
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
 IIC_Start()
 {
@@ -22,6 +28,12 @@ IIC_Start()
 	OLED_SCLK_Clr();
 }
 
+/******************************************************************************
+ * FunctionName : IIC_Stop
+ * Description  : I2C stop signal
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
 IIC_Stop()
 {
@@ -32,6 +44,12 @@ IIC_Stop()
 	
 }
 
+/******************************************************************************
+ * FunctionName : IIC_Wait_Ack
+ * Description  : IIC_Wait_Ack
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
 IIC_Wait_Ack()
 {
@@ -39,7 +57,13 @@ IIC_Wait_Ack()
 	OLED_SCLK_Clr();
 }
 
-void Write_IIC_Byte(unsigned char IIC_Byte)
+/******************************************************************************
+ * FunctionName : Write_IIC_Byte
+ * Description  : write a byte over i2c pin
+ * Parameters   : unsigned char IIC_Byte		what will be writen
+ * Returns      : none
+ *******************************************************************************/
+LOCAL void Write_IIC_Byte(unsigned char IIC_Byte)
 {
 	unsigned char i;
 	unsigned char m,da;
@@ -63,7 +87,13 @@ void Write_IIC_Byte(unsigned char IIC_Byte)
 	}
 }
 
-void Write_IIC_Command(unsigned char IIC_Command)
+/******************************************************************************
+ * FunctionName : Write_IIC_Command
+ * Description  : write ssd1306 comand through i2c
+ * Parameters   : unsigned char IIC_Command			command will be writen
+ * Returns      : none
+ *******************************************************************************/
+LOCAL void Write_IIC_Command(unsigned char IIC_Command)
 {
     IIC_Start();
     Write_IIC_Byte(0x78);            //Slave address,SA0=0
@@ -75,7 +105,13 @@ void Write_IIC_Command(unsigned char IIC_Command)
     IIC_Stop();
 }
 
-void Write_IIC_Data(unsigned char IIC_Data)
+/******************************************************************************
+ * FunctionName : Write_IIC_Data
+ * Description  : write ssd1306 data through i2c
+ * Parameters   : unsigned char IIC_Data		data will be writen
+ * Returns      : none
+ *******************************************************************************/
+LOCAL void Write_IIC_Data(unsigned char IIC_Data)
 {
     IIC_Start();
     Write_IIC_Byte(0x78);			//D/C#=0; R/W#=0
@@ -87,7 +123,15 @@ void Write_IIC_Data(unsigned char IIC_Data)
     IIC_Stop();
 }
 
-void OLED_WR_Byte(unsigned dat,unsigned cmd)
+/******************************************************************************
+ * FunctionName : OLED_WR_Byte
+ * Description  : 
+ * Parameters   : unsigned dat
+				  unsigned cmd			cmd=0	write command to i2c
+				  						cmd=1	write data to i2c
+ * Returns      : none
+ *******************************************************************************/
+LOCAL void OLED_WR_Byte(unsigned dat,unsigned cmd)
 {
 	if(cmd)
 	{
@@ -99,30 +143,27 @@ void OLED_WR_Byte(unsigned dat,unsigned cmd)
 	}
 }
 
-void ICACHE_FLASH_ATTR
-fill_picture(unsigned char fill_Data)
-{
-	unsigned char m,n;
-	for(m=0;m<8;m++)
-	{
-		OLED_WR_Byte(0xb0+m,0);		//page0-page1
-		OLED_WR_Byte(0x00,0);		//low column start address
-		OLED_WR_Byte(0x10,0);		//high column start address
-		for(n=0;n<128;n++)
-		{
-			OLED_WR_Byte(fill_Data,1);
-		}
-	}
-}
-//坐标设置
-void ICACHE_FLASH_ATTR
+/******************************************************************************
+ * FunctionName : OLED_Set_Pos
+ * Description  : set position
+ * Parameters   : unsigned char x		x row
+ 				  unsigned char y		y row
+ * Returns      : none
+ *******************************************************************************/
+LOCAL void ICACHE_FLASH_ATTR
 OLED_Set_Pos(unsigned char x, unsigned char y) 
 { 	
     OLED_WR_Byte(0xb0+y,OLED_CMD);
 	OLED_WR_Byte(((x&0xf0)>>4)|0x10,OLED_CMD);
 	OLED_WR_Byte((x&0x0f),OLED_CMD); 
 }
-//开启OLED显示    
+
+/******************************************************************************
+ * FunctionName : OLED_Display_On
+ * Description  : enable oled disp
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 OLED_Display_On(void)
 {
@@ -130,17 +171,29 @@ OLED_Display_On(void)
 	OLED_WR_Byte(0X14,OLED_CMD);  //DCDC ON
 	OLED_WR_Byte(0XAF,OLED_CMD);  //DISPLAY ON
 }
-//关闭OLED显示     
+
+/******************************************************************************
+ * FunctionName : OLED_Display_Off
+ * Description  : disable oled disp
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 OLED_Display_Off(void)
 {
 	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC命令
 	OLED_WR_Byte(0X10,OLED_CMD);  //DCDC OFF
 	OLED_WR_Byte(0XAE,OLED_CMD);  //DISPLAY OFF
-}		   			 
-//清屏函数,清完屏,整个屏幕是黑色的!和没点亮一样!!!	  
+}
+
+/******************************************************************************
+ * FunctionName : OLED_Clear_Black
+ * Description  : clean disp(black)
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/		   			   
 void ICACHE_FLASH_ATTR
-OLED_Clear(void)  
+OLED_Clear_Black(void)  
 {  
 	u8 i,n;		    
 	for(i=0;i<8;i++)  
@@ -152,8 +205,14 @@ OLED_Clear(void)
 	} //更新显示
 }
 
+/******************************************************************************
+ * FunctionName : OLED_Clear_White
+ * Description  : clean disp(white)
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_On(void)  
+OLED_Clear_White(void)  
 {  
 	u8 i,n;		    
 	for(i=0;i<8;i++)  
@@ -165,11 +224,15 @@ OLED_On(void)
 	} //更新显示
 }
 
-//在指定位置显示一个字符,包括部分字符
-//x:0~127
-//y:0~63
-//mode:0,反白显示;1,正常显示				 
-//size:选择字体 16/12 
+/******************************************************************************
+ * FunctionName : OLED_ShowChar
+ * Description  : 在指定位置显示一个字符,包括部分字符
+ * Parameters   : x	0~127
+				  y	0~63
+				  mode	0,反白显示;1,正常显示
+				  size	选择字体 16/12 
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
 {      	
@@ -192,20 +255,32 @@ OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
 		OLED_WR_Byte(F6x8[c][i],OLED_DATA);
 	}
 }
-//m^n函数
-u32 ICACHE_FLASH_ATTR
+
+/******************************************************************************
+ * FunctionName : oled_pow
+ * Description  : m^n
+ * Parameters   : m 
+ 				  n
+ * Returns      : result
+ *******************************************************************************/
+LOCAL u32 ICACHE_FLASH_ATTR
 oled_pow(u8 m,u8 n)
 {
 	u32 result=1;	 
 	while(n--)result*=m;    
 	return result;
-}				  
-//显示2个数字
-//x,y :起点坐标	 
-//len :数字的位数
-//size:字体大小
-//mode:模式	0,填充模式;1,叠加模式
-//num:数值(0~4294967295);	 		  
+}
+
+/******************************************************************************
+ * FunctionName : OLED_ShowNum
+ * Description  : 显示2个数字
+ * Parameters   : x,y :起点坐标	 
+				  len :数字的位数
+				  size:字体大小
+				  mode:模式	0,填充模式;1,叠加模式
+				  num:数值(0~4294967295);	 
+ * Returns      : none
+ *******************************************************************************/		  	  
 void ICACHE_FLASH_ATTR
 OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
 {         	
@@ -226,7 +301,13 @@ OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
 	 	OLED_ShowChar(x+(size2/2)*t,y,temp+'0',size2); 
 	}
 } 
-//显示一个字符号串
+
+/******************************************************************************
+ * FunctionName : OLED_ShowString
+ * Description  : 显示一个字符号串
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
 {
@@ -242,28 +323,15 @@ OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
 		j++;
 	}
 }
-//显示汉字
-void ICACHE_FLASH_ATTR
-OLED_ShowCHinese(u8 x,u8 y,u8 no)
-{      			    
-	u8 t,adder=0;
-	OLED_Set_Pos(x,y);	
-    for(t=0;t<16;t++)
-	{
-		OLED_WR_Byte(Hzk[2*no][t],OLED_DATA);
-		adder+=1;
-     }	
-	OLED_Set_Pos(x,y+1);	
-    for(t=0;t<16;t++)
-	{	
-		OLED_WR_Byte(Hzk[2*no+1][t],OLED_DATA);
-		adder+=1;
-    }					
-}
 
-//edit显示汉字,s指向索引
+/******************************************************************************
+ * FunctionName : OLED_ShowCHinese
+ * Description  : 显示汉字
+ * Parameters   : s指向索引
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_ShowaCHinese(u8 x,u8 y,u8 *s)
+OLED_ShowCHinese(u8 x,u8 y,u8 *s)
 {      			    
 	u8 t,adder,k=0;
 	for(k=0;k<hz16_num;k++)//在索引库里搜索
@@ -284,11 +352,18 @@ OLED_ShowaCHinese(u8 x,u8 y,u8 *s)
     		}
 		}
 	}
-			
 }
 
-
-/***********功能描述：显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7*****************/
+/******************************************************************************
+ * FunctionName : OLED_DrawBMP
+ * Description  : 显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7
+ * Parameters   : unsigned char x0			start x
+ 				  unsigned char y0			start y
+				  unsigned char x1			
+				  unsigned char y1			
+				  const unsigned char BMP[]		
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,const unsigned char BMP[])
 { 	
@@ -308,8 +383,14 @@ OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char 
 		}
 	}
 } 
-//初始化SSD1306					    
-void ICACHE_FLASH_ATTR
+
+/******************************************************************************
+ * FunctionName : OLED_Init
+ * Description  : 初始化SSD1306
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/					    
+LOCAL void ICACHE_FLASH_ATTR
 OLED_Init(void)
 { 	
     OLED_WR_Byte(0xAE,OLED_CMD);//--display off
@@ -348,7 +429,12 @@ OLED_Init(void)
 	OLED_WR_Byte(0xAF,OLED_CMD);//--turn on oled panel
 }  
 
-
+/******************************************************************************
+ * FunctionName : oled_gpio_init
+ * Description  : 
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 //for applications
 void ICACHE_FLASH_ATTR
 oled_gpio_init(void)
@@ -359,19 +445,25 @@ oled_gpio_init(void)
 	OLED_Clear(); 
 }
 
+/******************************************************************************
+ * FunctionName : oled_string
+ * Description  : 
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 oled_string(void)
 {
 	u8 t;
 	OLED_Clear(); 
 	t=' ';
-	OLED_ShowaCHinese(0,0,"こ");
-    OLED_ShowaCHinese(18,0,"れ");
-	OLED_ShowaCHinese(36,0,"が");
+	OLED_ShowCHinese(0,0,"こ");
+    OLED_ShowCHinese(18,0,"れ");
+	OLED_ShowCHinese(36,0,"が");
 //	OLED_ShowaCHinese(54,0,"最");
-	OLED_ShowaCHinese(72,0,"最");
-	OLED_ShowaCHinese(90,0,"後");
-	OLED_ShowaCHinese(108,0,"の");
+	OLED_ShowCHinese(72,0,"最");
+	OLED_ShowCHinese(90,0,"後");
+	OLED_ShowCHinese(108,0,"の");
     OLED_ShowString(6,3,"0.96' OLED TEST",16);
 	OLED_ShowString(0,6,"ASCII:",16);  
 	OLED_ShowString(63,6,"CODE:",16); 
@@ -381,6 +473,12 @@ oled_string(void)
 	OLED_ShowNum(103,6,t,3,16);//显示ASCII字符的码值 
 }
 
+/******************************************************************************
+ * FunctionName : oled_bmp1
+ * Description  : 
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 oled_bmp1(void)
 {
@@ -389,6 +487,12 @@ oled_bmp1(void)
 	OLED_DrawBMP(0,0,128,8,BMP5);
 }
 
+/******************************************************************************
+ * FunctionName : oled_bmp2
+ * Description  : 
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 oled_bmp2(void)
 {

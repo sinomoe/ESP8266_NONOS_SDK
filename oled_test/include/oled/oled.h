@@ -10,7 +10,6 @@
 #define  u32 unsigned int 
 #define OLED_CMD  0	//写命令
 #define OLED_DATA 1	//写数据
-#define OLED_MODE 0
 
 //定义SCL和SDA的IO
 #define OLED_SCL_PIN    12
@@ -32,33 +31,24 @@
 #define Y_WIDTH 	64	
 
 //OLED控制用函数
-void  OLED_WR_Byte(unsigned dat,unsigned cmd);
-
+void OLED_WR_Byte(unsigned dat,unsigned cmd);
 void ICACHE_FLASH_ATTR OLED_Display_On(void);
 void ICACHE_FLASH_ATTR OLED_Display_Off(void);	   							   		    
-void ICACHE_FLASH_ATTR OLED_Init(void);
-void ICACHE_FLASH_ATTR OLED_Clear(void);
-//void ICACHE_FLASH_ATTR OLED_DrawPoint(u8 x,u8 y,u8 t);
-void ICACHE_FLASH_ATTR OLED_Fill(u8 x1,u8 y1,u8 x2,u8 y2,u8 dot);
+//void ICACHE_FLASH_ATTR OLED_Init(void);
+void ICACHE_FLASH_ATTR OLED_Clear_Black(void);
+void ICACHE_FLASH_ATTR OLED_Clear_White(void);
 void ICACHE_FLASH_ATTR OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size);
 void ICACHE_FLASH_ATTR OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size);
 void ICACHE_FLASH_ATTR OLED_ShowString(u8 x,u8 y, u8 *p,u8 Char_Size);	 
-void ICACHE_FLASH_ATTR OLED_Set_Pos(unsigned char x, unsigned char y);
-void ICACHE_FLASH_ATTR OLED_ShowCHinese(u8 x,u8 y,u8 no);
-
-void ICACHE_FLASH_ATTR OLED_ShowaCHinese(u8 x,u8 y,u8 *s);
-
+//void ICACHE_FLASH_ATTR OLED_Set_Pos(unsigned char x, unsigned char y);
+void ICACHE_FLASH_ATTR OLED_ShowCHinese(u8 x,u8 y,u8 *s);
 void ICACHE_FLASH_ATTR OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,const unsigned char BMP[]);
-void ICACHE_FLASH_ATTR fill_picture(unsigned char fill_Data);
-void ICACHE_FLASH_ATTR Picture();
 //void IIC_Start();
 //void IIC_Stop();
-void Write_IIC_Command(unsigned char IIC_Command);
-void Write_IIC_Data(unsigned char IIC_Data);
-void Write_IIC_Byte(unsigned char IIC_Byte);
+//void Write_IIC_Command(unsigned char IIC_Command);
+//void Write_IIC_Data(unsigned char IIC_Data);
+//void Write_IIC_Byte(unsigned char IIC_Byte);
 //void IIC_Wait_Ack();
-
-
 void ICACHE_FLASH_ATTR oled_gpio_init(void);
 void ICACHE_FLASH_ATTR oled_string(void);
 void ICACHE_FLASH_ATTR oled_bmp1(void);
