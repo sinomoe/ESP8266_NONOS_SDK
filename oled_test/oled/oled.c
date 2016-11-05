@@ -331,7 +331,7 @@ OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_ShowCHinese(u8 x,u8 y,u8 *s)
+OLED_ShowChinese(u8 x,u8 y,u8 *s)
 {      			    
 	u8 t,adder,k=0;
 	for(k=0;k<hz16_num;k++)//在索引库里搜索
@@ -442,7 +442,7 @@ oled_gpio_init(void)
     PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDI_U,FUNC_GPIO12);//SCL
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTMS_U,FUNC_GPIO14);//SDA
 	OLED_Init();			//初始化OLED 
-	OLED_Clear(); 
+	OLED_Clear_Black(); 
 }
 
 /******************************************************************************
@@ -455,15 +455,15 @@ void ICACHE_FLASH_ATTR
 oled_string(void)
 {
 	u8 t;
-	OLED_Clear(); 
+	OLED_Clear_Black(); 
 	t=' ';
-	OLED_ShowCHinese(0,0,"こ");
-    OLED_ShowCHinese(18,0,"れ");
-	OLED_ShowCHinese(36,0,"が");
+	OLED_ShowChinese(0,0,"こ");
+    OLED_ShowChinese(18,0,"れ");
+	OLED_ShowChinese(36,0,"が");
 //	OLED_ShowaCHinese(54,0,"最");
-	OLED_ShowCHinese(72,0,"最");
-	OLED_ShowCHinese(90,0,"後");
-	OLED_ShowCHinese(108,0,"の");
+	OLED_ShowChinese(72,0,"最");
+	OLED_ShowChinese(90,0,"後");
+	OLED_ShowChinese(108,0,"の");
     OLED_ShowString(6,3,"0.96' OLED TEST",16);
 	OLED_ShowString(0,6,"ASCII:",16);  
 	OLED_ShowString(63,6,"CODE:",16); 
@@ -483,7 +483,7 @@ void ICACHE_FLASH_ATTR
 oled_bmp1(void)
 {
 //    OLED_Init();			//初始化OLED  
-	OLED_Clear(); 
+	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,128,8,BMP5);
 }
 
@@ -497,6 +497,6 @@ void ICACHE_FLASH_ATTR
 oled_bmp2(void)
 {
 //    OLED_Init();			//初始化OLED  
-	OLED_Clear(); 
+	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,128,8,BMP6);
 }

@@ -31,7 +31,7 @@
 #define Y_WIDTH 	64	
 
 //OLED¿ØÖÆÓÃº¯Êý
-void OLED_WR_Byte(unsigned dat,unsigned cmd);
+//void OLED_WR_Byte(unsigned dat,unsigned cmd);
 void ICACHE_FLASH_ATTR OLED_Display_On(void);
 void ICACHE_FLASH_ATTR OLED_Display_Off(void);	   							   		    
 //void ICACHE_FLASH_ATTR OLED_Init(void);
@@ -41,7 +41,7 @@ void ICACHE_FLASH_ATTR OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size);
 void ICACHE_FLASH_ATTR OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size);
 void ICACHE_FLASH_ATTR OLED_ShowString(u8 x,u8 y, u8 *p,u8 Char_Size);	 
 //void ICACHE_FLASH_ATTR OLED_Set_Pos(unsigned char x, unsigned char y);
-void ICACHE_FLASH_ATTR OLED_ShowCHinese(u8 x,u8 y,u8 *s);
+void ICACHE_FLASH_ATTR OLED_ShowChinese(u8 x,u8 y,u8 *s);
 void ICACHE_FLASH_ATTR OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,const unsigned char BMP[]);
 //void IIC_Start();
 //void IIC_Stop();
