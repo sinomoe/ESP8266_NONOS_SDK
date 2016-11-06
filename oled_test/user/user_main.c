@@ -57,42 +57,42 @@ timer0_callback(){
 		GPIO_OUTPUT_SET(GPIO_ID_PIN(5), 1); 
 		INFO("GREEN\r\n");
         zt = 2; 
-		oled_string();
+		oled_demo_string();
 		return; 
     }
     if(zt == 2){  
 		GPIO_OUTPUT_SET(GPIO_ID_PIN(4), 0); //R
 		INFO("GREEN&RED\r\n");
         zt = 3; 
-		oled_bmp1();
+		oled_demo_bmp1();
 		return; 
     }
 	if(zt == 3){  
 		GPIO_OUTPUT_SET(GPIO_ID_PIN(13), 1);   
 		INFO("RED\r\n");
         zt = 4;  
-		oled_bmp2();
+		oled_demo_bmp2();
 		return;
     }  
     if(zt == 4){  
 		GPIO_OUTPUT_SET(GPIO_ID_PIN(5), 0); //B
 		INFO("RED&BLUE\r\n");
         zt = 5; 
-		oled_string();
+		oled_demo_string();
 		return; 
     }
 	if(zt == 5){  
 		GPIO_OUTPUT_SET(GPIO_ID_PIN(4), 1); 
 		INFO("BLUE\r\n");
         zt = 6;  
-		oled_bmp1();
+		oled_demo_bmp1();
 		return;
     } 
 	if(zt == 6){  
 		GPIO_OUTPUT_SET(GPIO_ID_PIN(13), 0); //G
 		INFO("BLUE&GREEN\r\n");
         zt = 1;  
-		oled_bmp2();
+		oled_demo_bmp2();
 		return;
     } 
 

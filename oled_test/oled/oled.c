@@ -501,13 +501,13 @@ oled_gpio_init(void)
 }
 
 /******************************************************************************
- * FunctionName : oled_string
+ * FunctionName : oled_demo_string
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-oled_string(void)
+oled_demo_string(void)
 {
 	OLED_Clear_Black(); 
 	OLED_ShowChineseString(0,0,"これが恷恷恷瘁のこれが恷恷恷瘁の");
@@ -516,26 +516,26 @@ oled_string(void)
 }
 
 /******************************************************************************
- * FunctionName : oled_bmp1
+ * FunctionName : oled_demo_bmp1
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-oled_bmp1(void)
+oled_demo_bmp1(void)
 {
 	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,128,8,BMP5);
 }
 
 /******************************************************************************
- * FunctionName : oled_bmp2
+ * FunctionName : oled_demo_bmp2
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-oled_bmp2(void)
+oled_demo_bmp2(void)
 {
 	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,128,8,BMP6);

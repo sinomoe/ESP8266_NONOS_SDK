@@ -51,8 +51,8 @@ void ICACHE_FLASH_ATTR OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned 
 //void Write_IIC_Byte(unsigned char IIC_Byte);
 //void IIC_Wait_Ack();
 void ICACHE_FLASH_ATTR oled_gpio_init(void);
-void ICACHE_FLASH_ATTR oled_string(void);
-void ICACHE_FLASH_ATTR oled_bmp1(void);
-void ICACHE_FLASH_ATTR oled_bmp2(void);
+void ICACHE_FLASH_ATTR oled_demo_string(void);
+void ICACHE_FLASH_ATTR oled_demo_bmp1(void);
+void ICACHE_FLASH_ATTR oled_demo_bmp2(void);
 
 #endif  
