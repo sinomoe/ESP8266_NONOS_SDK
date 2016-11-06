@@ -457,14 +457,14 @@ oled_string(void)
 	u8 t;
 	OLED_Clear_Black(); 
 	t=' ';
-	OLED_ShowChinese(0,0,"こ");
-    OLED_ShowChinese(18,0,"れ");
-	OLED_ShowChinese(36,0,"が");
+	OLED_ShowChinese(0,3,"こ");
+    OLED_ShowChinese(18,3,"れ");
+	OLED_ShowChinese(36,3,"が");
 //	OLED_ShowaCHinese(54,0,"最");
-	OLED_ShowChinese(72,0,"最");
-	OLED_ShowChinese(90,0,"後");
-	OLED_ShowChinese(108,0,"の");
-    OLED_ShowString(6,3,"0.96' OLED TEST",16);
+	OLED_ShowChinese(72,3,"最");
+	OLED_ShowChinese(90,3,"後");
+	OLED_ShowChinese(108,3,"の");
+    OLED_ShowString(6,0,"0.96' OLED TEST",16);
 	OLED_ShowString(0,6,"ASCII:",16);  
 	OLED_ShowString(63,6,"CODE:",16); 
     OLED_ShowChar(48,6,t,16);//显示ASCII字符	   
