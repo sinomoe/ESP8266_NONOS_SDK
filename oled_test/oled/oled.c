@@ -1,4 +1,4 @@
-#include "oled.h"
+	#include "oled.h"
 #include "oledfont.h"
 #include "oledbmp.h"
 
@@ -355,6 +355,31 @@ OLED_ShowChinese(u8 x,u8 y,u8 *s)
 }
 
 /******************************************************************************
+ * FunctionName : OLED_ShowChineseString
+ * Description  : 显示汉字
+ * Parameters   : s指向索引
+ * Returns      : none
+ *******************************************************************************/
+void ICACHE_FLASH_ATTR
+OLED_ShowChineseString(u8 x,u8 y,u8 *s)
+{    
+	u8 i=0,j=0;  	
+	while(s[j]!='\0')
+	{
+		OLED_ShowChinese(x,y,s+2*i);
+		i++;
+		j+=2;//一个中文2个char
+		x+=16;
+		if(x>112)//超出部分自动换行（此处只针对GB162，如果是8x8改成120即可）
+		{
+			x=0;
+			y+=3;//也是针对GB162，3page一行
+		}
+	}
+}
+
+
+/******************************************************************************
  * FunctionName : OLED_DrawBMP
  * Description  : 显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7
  * Parameters   : unsigned char x0			start x
@@ -454,23 +479,24 @@ oled_gpio_init(void)
 void ICACHE_FLASH_ATTR
 oled_string(void)
 {
-	u8 t;
+//	u8 t;
 	OLED_Clear_Black(); 
-	t=' ';
-	OLED_ShowChinese(0,3,"こ");
-    OLED_ShowChinese(18,3,"れ");
-	OLED_ShowChinese(36,3,"が");
+//	t=' ';
+	OLED_ShowChineseString(0,0,"これが最最最後のこれが最最最後の");
+//	OLED_ShowChinese(0,3,"こ");
+//  OLED_ShowChinese(18,3,"れ");
+//	OLED_ShowChinese(36,3,"が");
 //	OLED_ShowaCHinese(54,0,"最");
-	OLED_ShowChinese(72,3,"最");
-	OLED_ShowChinese(90,3,"後");
-	OLED_ShowChinese(108,3,"の");
-    OLED_ShowString(6,0,"0.96' OLED TEST",16);
-	OLED_ShowString(0,6,"ASCII:",16);  
-	OLED_ShowString(63,6,"CODE:",16); 
-    OLED_ShowChar(48,6,t,16);//显示ASCII字符	   
-	t++;
-	if(t>'~')t=' ';
-	OLED_ShowNum(103,6,t,3,16);//显示ASCII字符的码值 
+//	OLED_ShowChinese(72,3,"最");
+//	OLED_ShowChinese(90,3,"後");
+//	OLED_ShowChinese(108,3,"の");
+    OLED_ShowString(6,6,"0.96' OLED TEST",16);
+//	OLED_ShowString(0,6,"ASCII:",16);  
+//	OLED_ShowString(63,6,"CODE:",16); 
+//  OLED_ShowChar(48,6,t,16);//显示ASCII字符	   
+//	t++;
+//	if(t>'~')t=' ';
+//	OLED_ShowNum(103,6,t,3,16);//显示ASCII字符的码值 
 }
 
 /******************************************************************************
