@@ -1,17 +1,21 @@
 	#include "oled.h"
 #include "oledfont.h"
 #include "oledbmp.h"
-
-//OLED的显存
-//存放格式如下.
-//[0]0 1 2 3 ... 127	
-//[1]0 1 2 3 ... 127	
-//[2]0 1 2 3 ... 127	
-//[3]0 1 2 3 ... 127	
-//[4]0 1 2 3 ... 127	
-//[5]0 1 2 3 ... 127	
-//[6]0 1 2 3 ... 127	
-//[7]0 1 2 3 ... 127 	
+/*
+OLED的显存
+存放格式如下
+由于驱动刷新模式的限制，y row被定义成8个像素大小为8的page，每次刷新page内的所有像素
+page等同于y坐标
+|page| x row
+|[0] |	0 1 2 3 ... 127	
+|[1] |	0 1 2 3 ... 127	
+|[2] |	0 1 2 3 ... 127	
+|[3] |	0 1 2 3 ... 127	
+|[4] |	0 1 2 3 ... 127	
+|[5] |	0 1 2 3 ... 127	
+|[6] |	0 1 2 3 ... 127	
+|[7] |	0 1 2 3 ... 127 	
+*/
 
 /******************************************************************************
  * FunctionName : IIC_Start
@@ -228,7 +232,7 @@ OLED_Clear_White(void)
  * FunctionName : OLED_ShowChar
  * Description  : 在指定位置显示一个字符,包括部分字符
  * Parameters   : x	0~127
-				  y	0~63
+				  y	0~7 page
 				  mode	0,反白显示;1,正常显示
 				  size	选择字体 16/12 
  * Returns      : none
@@ -238,7 +242,18 @@ OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
 {      	
 	unsigned char c=0,i=0;	
 	c=chr-' ';//得到偏移后的值			
-	if(x>Max_Column-1){x=0;y=y+2;}
+	if(x>Max_Column-1)
+	{
+		x=0;
+		if(Char_Size==16)
+		{
+			y+=2;//size=16换2 page
+		}
+		else
+		{
+			y+=1;//size=8换1 page
+		}
+	}
 	if(Char_Size ==16)
 	{
         OLED_Set_Pos(x,y);	
@@ -274,7 +289,8 @@ oled_pow(u8 m,u8 n)
 /******************************************************************************
  * FunctionName : OLED_ShowNum
  * Description  : 显示2个数字
- * Parameters   : x,y :起点坐标	 
+ * Parameters   : x   :起点x坐标
+ 				  y   :page	 
 				  len :数字的位数
 				  size:字体大小
 				  mode:模式	0,填充模式;1,叠加模式
@@ -304,8 +320,11 @@ OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
 
 /******************************************************************************
  * FunctionName : OLED_ShowString
- * Description  : 显示一个字符号串
- * Parameters   : none
+ * Description  : 显示一个字符号串,默认只有两个字体大小8x16,6x8
+ * Parameters   : u8 x		x row
+ 				  u8 y		page
+				  u8 *chr	chr point to 字符串
+				  u8 Char_Size 字体大小
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
@@ -315,10 +334,23 @@ OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
 	while (chr[j]!='\0')
 	{		
 		OLED_ShowChar(x,y,chr[j],Char_Size);
-		x+=8;
-		if(x>120)
+		if(Char_Size==16)//default 8x16
 		{
-			x=0;y+=2;
+			x+=8;
+			if(x>120)//超出换行
+			{
+				x=0;
+				y+=2;      
+			}
+		}
+		else	//default 6x8
+		{
+			x+=6;
+			if(x>122)//超出换行
+			{
+				x=0;
+				y+=1;      
+			}
 		}
 		j++;
 	}
@@ -333,7 +365,7 @@ OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
 void ICACHE_FLASH_ATTR
 OLED_ShowChinese(u8 x,u8 y,u8 *s)
 {      			    
-	u8 t,adder,k=0;
+	u8 t,k=0;
 	for(k=0;k<hz16_num;k++)//在索引库里搜索
 	{
 		if((hz16[k].Index[0]==*(s))&&(hz16[k].Index[1]==*(s+1)))//判断是否有这个字
@@ -342,13 +374,11 @@ OLED_ShowChinese(u8 x,u8 y,u8 *s)
     		for(t=0;t<16;t++)
 			{
 				OLED_WR_Byte(hz16[k].Msk[t],OLED_DATA);
-				adder+=1;
 			}	
 			OLED_Set_Pos(x,y+1);	
     		for(t=0;t<16;t++)
 			{	
 				OLED_WR_Byte(hz16[k].Msk[t+16],OLED_DATA);
-				adder+=1;
     		}
 		}
 	}
@@ -357,7 +387,7 @@ OLED_ShowChinese(u8 x,u8 y,u8 *s)
 /******************************************************************************
  * FunctionName : OLED_ShowChineseString
  * Description  : 显示汉字
- * Parameters   : s指向索引
+ * Parameters   : s指向中文字符串
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
@@ -373,7 +403,7 @@ OLED_ShowChineseString(u8 x,u8 y,u8 *s)
 		if(x>112)//超出部分自动换行（此处只针对GB162，如果是8x8改成120即可）
 		{
 			x=0;
-			y+=3;//也是针对GB162，3page一行
+			y+=2;//也是针对GB162，2page一行
 		}
 	}
 }
@@ -479,24 +509,10 @@ oled_gpio_init(void)
 void ICACHE_FLASH_ATTR
 oled_string(void)
 {
-//	u8 t;
 	OLED_Clear_Black(); 
-//	t=' ';
 	OLED_ShowChineseString(0,0,"これが最最最後のこれが最最最後の");
-//	OLED_ShowChinese(0,3,"こ");
-//  OLED_ShowChinese(18,3,"れ");
-//	OLED_ShowChinese(36,3,"が");
-//	OLED_ShowaCHinese(54,0,"最");
-//	OLED_ShowChinese(72,3,"最");
-//	OLED_ShowChinese(90,3,"後");
-//	OLED_ShowChinese(108,3,"の");
-    OLED_ShowString(6,6,"0.96' OLED TEST",16);
-//	OLED_ShowString(0,6,"ASCII:",16);  
-//	OLED_ShowString(63,6,"CODE:",16); 
-//  OLED_ShowChar(48,6,t,16);//显示ASCII字符	   
-//	t++;
-//	if(t>'~')t=' ';
-//	OLED_ShowNum(103,6,t,3,16);//显示ASCII字符的码值 
+	OLED_ShowString(0,4,"0.96' OLED TEST",16);
+    OLED_ShowString(0,6,"0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST",8);
 }
 
 /******************************************************************************
@@ -508,7 +524,6 @@ oled_string(void)
 void ICACHE_FLASH_ATTR
 oled_bmp1(void)
 {
-//    OLED_Init();			//初始化OLED  
 	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,128,8,BMP5);
 }
@@ -522,7 +537,6 @@ oled_bmp1(void)
 void ICACHE_FLASH_ATTR
 oled_bmp2(void)
 {
-//    OLED_Init();			//初始化OLED  
 	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,128,8,BMP6);
 }
