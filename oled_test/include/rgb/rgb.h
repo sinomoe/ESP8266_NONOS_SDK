@@ -14,6 +14,7 @@ typedef struct color
     unsigned char B;
 }color;
 
+color CurRGB;
 
 #ifdef USE_RGB3PIN
 //RGB PIN¹²Ñô£¬GPIOµÍÊä³ö
@@ -42,6 +43,7 @@ typedef struct color
 
 void ICACHE_FLASH_ATTR rgb_gpio_init(void);
 void ICACHE_FLASH_ATTR FluentColor(color* rgbi,color* rgbs,unsigned char step);
+void ICACHE_FLASH_ATTR RGB_PWM_Init(void);
 #endif
 
 #endif

@@ -3,7 +3,7 @@
 #include "debug.h"
 
 LOCAL os_timer_t timer_RGB; //rgb计算回调参数
-color CurRGB,RGBi,RGBs;
+LOCAL color RGBi,RGBs;
 
 unsigned char STEP=0;
 unsigned char cnt=0;
@@ -24,8 +24,12 @@ timer_RGB_callback()
     {
         //culculate rgb
         CurRGB.R=RGBi.R+(RGBs.R-RGBi.R)*cnt/STEP;
+        pwm_set_duty (255000-1000*CurRGB.R, 0);
         CurRGB.G=RGBi.G+(RGBs.G-RGBi.G)*cnt/STEP;
+        pwm_set_duty (255000-1000*CurRGB.G, 1);
         CurRGB.B=RGBi.B+(RGBs.B-RGBi.B)*cnt/STEP;
+        pwm_set_duty (255000-1000*CurRGB.B, 2);
+        pwm_start();
         INFO("CNT:%d\tR:%d\tG:%d\tB:%d\t\n",cnt,CurRGB.R,CurRGB.G,CurRGB.B);//debug
         cnt++;
     }
@@ -48,7 +52,22 @@ FluentColor(color* rgbi,color* rgbs,unsigned char step)
     STEP=step;
     os_timer_disarm(&timer_RGB);
 	os_timer_setfn(&timer_RGB,(os_timer_func_t *)timer_RGB_callback,NULL);
-	os_timer_arm(&timer_RGB,200,1);//ms
+	os_timer_arm(&timer_RGB,38,1);//ms
 }
 
-
+void ICACHE_FLASH_ATTR
+RGB_PWM_Init(void)
+{
+    unsigned int io_info[][3]=
+	{     
+    	{PWM_0_OUT_IO_MUX,PWM_0_OUT_IO_FUNC,PWM_0_OUT_IO_NUM},     
+    	{PWM_1_OUT_IO_MUX,PWM_1_OUT_IO_FUNC,PWM_1_OUT_IO_NUM},     
+    	{PWM_2_OUT_IO_MUX,PWM_2_OUT_IO_FUNC,PWM_2_OUT_IO_NUM},   
+	}; 
+	unsigned int duty[3]={0,0,0};//0-255555
+	pwm_init(11500, duty, PWM_CHANNEL,io_info);
+    //initialize current RGB configuration
+    CurRGB.R=255;
+    CurRGB.G=255;
+    CurRGB.B=255;
+}

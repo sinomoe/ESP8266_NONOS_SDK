@@ -41,15 +41,8 @@
 
 MQTT_Client mqttClient;
 LOCAL os_timer_t timer0;
-char zt = 1; 
-
-unsigned int io_info[][3]=
-{     
-    {PWM_0_OUT_IO_MUX,PWM_0_OUT_IO_FUNC,PWM_0_OUT_IO_NUM},     
-    {PWM_1_OUT_IO_MUX,PWM_1_OUT_IO_FUNC,PWM_1_OUT_IO_NUM},     
-    {PWM_2_OUT_IO_MUX,PWM_2_OUT_IO_FUNC,PWM_2_OUT_IO_NUM},   
-}; 
-unsigned int duty[3]={2550,2550,2550};
+LOCAL char zt = 1; 
+LOCAL color c1;
 
 /******************************************************************************
  * FunctionName : timer0_callback
@@ -60,44 +53,61 @@ unsigned int duty[3]={2550,2550,2550};
 void ICACHE_FLASH_ATTR
 timer0_callback(){  
     if(zt == 1){  
-        RGB_G_ON();
-		RGB_B_OFF(); 
-		INFO("GREEN\r\n");
+        c1.R=255;
+		c1.G=0;
+		c1.B=0;
+		FluentColor(&CurRGB,&c1,60);
+		INFO("Red\r\n");
         zt = 2; 
 		oled_demo_string();
 		return; 
     }
     if(zt == 2){  
-		RGB_R_ON();
-		INFO("GREEN&RED\r\n");
+		c1.R=255;
+		c1.G=255;
+		c1.B=0;
+		FluentColor(&CurRGB,&c1,60);
+		INFO("RED&GREEN\r\n");
         zt = 3; 
 		oled_demo_bmp1();
 		return; 
     }
 	if(zt == 3){  
-		RGB_G_OFF();   
-		INFO("RED\r\n");
+		c1.R=0;
+		c1.G=255;
+		c1.B=0;
+		FluentColor(&CurRGB,&c1,60);
+		INFO("GREEN\r\n");
         zt = 4;  
 		oled_demo_bmp2();
 		return;
     }  
     if(zt == 4){  
-		RGB_B_ON();
-		INFO("RED&BLUE\r\n");
+		c1.R=0;
+		c1.G=255;
+		c1.B=255;
+		FluentColor(&CurRGB,&c1,60);
+		INFO("GREEN&BLUE\r\n");
         zt = 5; 
 		oled_demo_string();
 		return; 
     }
 	if(zt == 5){  
-		RGB_R_OFF();
+		c1.R=0;
+		c1.G=0;
+		c1.B=255;
+		FluentColor(&CurRGB,&c1,60);
 		INFO("BLUE\r\n");
         zt = 6;  
 		oled_demo_bmp1();
 		return;
     } 
 	if(zt == 6){  
-		RGB_G_ON();
-		INFO("BLUE&GREEN\r\n");
+		c1.R=255;
+		c1.G=0;
+		c1.B=255;
+		FluentColor(&CurRGB,&c1,60);
+		INFO("BLUE&RED\r\n");
         zt = 1;  
 		oled_demo_bmp2();
 		return;
@@ -134,12 +144,7 @@ mqttConnectedCb(uint32_t *args)
 	INFO("MQTT: Connected\r\n");
 	MQTT_Subscribe(client, "/topic/0", 0);
 //	MQTT_Subscribe(client, "/mqtt/topic/1", 0);
-//	MQTT_Subscribe(client, "/mqtt/topic/2", 0);
-
 //	MQTT_Publish(client, "/mqtt/topic/0", "hello0", 6, 0, 0);
-//	MQTT_Publish(client, "/mqtt/topic/1", "hello1", 6, 0, 0);
-//	MQTT_Publish(client, "/mqtt/topic/2", "hello2", 6, 0, 0);
-
 }
 
 /******************************************************************************
@@ -242,52 +247,33 @@ user_rf_cal_sector_set(void)
 
 void user_init(void)
 {
+	RGB_PWM_Init();
+	INFO("\r\nRGB PWM init ...\r\n");
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
-
-	unsigned int io_info[][3]=
-	{     
-    	{PWM_0_OUT_IO_MUX,PWM_0_OUT_IO_FUNC,PWM_0_OUT_IO_NUM},     
-    	{PWM_1_OUT_IO_MUX,PWM_1_OUT_IO_FUNC,PWM_1_OUT_IO_NUM},     
-    	{PWM_2_OUT_IO_MUX,PWM_2_OUT_IO_FUNC,PWM_2_OUT_IO_NUM},   
-	}; 
-	unsigned int duty[3]={0,0,0};//0-255000
-	pwm_init(11500, duty, PWM_CHANNEL,io_info);
-
 	os_delay_us(1000000);
 	CFG_Load();
 
 	MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
 	//MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
-
 	MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
 	//MQTT_InitClient(&mqttClient, "client_id", "user", "pass", 120, 1);
-
 	MQTT_InitLWT(&mqttClient, "/lwt", "offline", 0, 0);//lastwill topic&message
 	MQTT_OnConnected(&mqttClient, mqttConnectedCb);
 	MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);
 	MQTT_OnPublished(&mqttClient, mqttPublishedCb);
 	MQTT_OnData(&mqttClient, mqttDataCb);
-	
-	//WIFI_Connect("TP-LINK_MINI","LCJ3l2c1h1w1x", wifiConnectCb);
+
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
+	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
 
 	INFO("\r\nSystem started ...\r\n");
-/*
-	rgb_gpio_init();
-	INFO("GPIO READY\r\n");
+
 	os_timer_disarm(&timer0);
 	os_timer_setfn(&timer0,(os_timer_func_t *)timer0_callback,NULL);
-	os_timer_arm(&timer0,5000,1);
-	INFO("TIMER SET READY\r\n");
-*/
-	color c1,c2;
-	c1.R=0;
-	c1.G=100;
-	c1.B=255;
-	c2.R=100;
-	c2.G=255;
-	c2.B=0;
-	FluentColor(&c1,&c2,60);
-	//oled_gpio_init();
+	os_timer_arm(&timer0,3000,1);
+	INFO("\r\nTIMER SET READY\r\n");
+
+	oled_gpio_init();
+	INFO("\r\nOLED init ...\r\n");
 }
