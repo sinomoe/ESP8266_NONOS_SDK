@@ -43,6 +43,14 @@ MQTT_Client mqttClient;
 LOCAL os_timer_t timer0;
 char zt = 1; 
 
+unsigned int io_info[][3]=
+{     
+    {PWM_0_OUT_IO_MUX,PWM_0_OUT_IO_FUNC,PWM_0_OUT_IO_NUM},     
+    {PWM_1_OUT_IO_MUX,PWM_1_OUT_IO_FUNC,PWM_1_OUT_IO_NUM},     
+    {PWM_2_OUT_IO_MUX,PWM_2_OUT_IO_FUNC,PWM_2_OUT_IO_NUM},   
+}; 
+unsigned int duty[3]={2550,2550,2550};
+
 /******************************************************************************
  * FunctionName : timer0_callback
  * Description  : 
@@ -236,8 +244,17 @@ void user_init(void)
 {
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
-	os_delay_us(1000000);
 
+	unsigned int io_info[][3]=
+	{     
+    	{PWM_0_OUT_IO_MUX,PWM_0_OUT_IO_FUNC,PWM_0_OUT_IO_NUM},     
+    	{PWM_1_OUT_IO_MUX,PWM_1_OUT_IO_FUNC,PWM_1_OUT_IO_NUM},     
+    	{PWM_2_OUT_IO_MUX,PWM_2_OUT_IO_FUNC,PWM_2_OUT_IO_NUM},   
+	}; 
+	unsigned int duty[3]={2550,0,2550};
+	pwm_init(115, duty, PWM_CHANNEL,io_info);
+
+	os_delay_us(1000000);
 	CFG_Load();
 
 	MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);

@@ -50,3 +50,5 @@ FluentColor(color* rgbi,color* rgbs,unsigned char step)
 	os_timer_setfn(&timer_RGB,(os_timer_func_t *)timer_RGB_callback,NULL);
 	os_timer_arm(&timer_RGB,200,1);//ms
 }
+
+
