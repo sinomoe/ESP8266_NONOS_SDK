@@ -3,7 +3,9 @@
 
 #define USE_OPTIMIZE_PRINTF
 #define USE_RGB3PIN
-//#define //USE_RGB1WIRE
+//#define USE_RGB1WIRE
+#define USE_HARDPWM
+//#define USE_SOFTPWM
 
 #endif
 

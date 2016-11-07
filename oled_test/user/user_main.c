@@ -38,11 +38,15 @@
 #include "mem.h"
 #include "oled.h"
 #include "rgb.h"
+//#include "stdio.h"
+//#include "stdlib.h"
 
 MQTT_Client mqttClient;
 LOCAL os_timer_t timer0;
 LOCAL char zt = 1; 
 LOCAL color c1;
+
+//unsigned char strtmp[100]={0};
 
 /******************************************************************************
  * FunctionName : timer0_callback
@@ -60,6 +64,8 @@ timer0_callback(){
 		INFO("Red\r\n");
         zt = 2; 
 		oled_demo_string();
+		//sprintf(strtmp,"%d",CurRGB.R);
+		//OLED_ShowString(0,4,strtmp,16);
 		return; 
     }
     if(zt == 2){  

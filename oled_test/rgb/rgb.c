@@ -8,6 +8,8 @@ LOCAL color RGBi,RGBs;
 unsigned char STEP=0;
 unsigned char cnt=0;
 
+#ifdef USE_RGB3PIN
+#ifdef USE_SOFTPWM
 void ICACHE_FLASH_ATTR
 rgb_gpio_init()
 {
@@ -16,7 +18,9 @@ rgb_gpio_init()
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO5_U,FUNC_GPIO5);//BLUE
     gpio_init();
 }
+#endif//if use soft pwm 
 
+#ifdef USE_HARDPWM
 LOCAL void ICACHE_FLASH_ATTR
 timer_RGB_callback()
 {
@@ -71,3 +75,5 @@ RGB_PWM_Init(void)
     CurRGB.G=255;
     CurRGB.B=255;
 }
+#endif//if use hard pwm
+#endif//if use 3 pins

@@ -22,14 +22,18 @@ color CurRGB;
 #define RGB_G_PIN   13
 #define RGB_B_PIN   5
 
+#ifdef USE_SOFTPWM
 #define RGB_R_ON()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_R_PIN), 0)
 #define RGB_R_OFF()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_R_PIN), 1)
 #define RGB_G_ON()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_G_PIN), 0)
 #define RGB_G_OFF()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_G_PIN), 1)
 #define RGB_B_ON()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_B_PIN), 0)
 #define RGB_B_OFF()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_B_PIN), 1)
+void ICACHE_FLASH_ATTR rgb_gpio_init(void);
+#endif//if use soft pwm
 
-//PWM configuration
+#ifdef USE_HARDPWM
+//Hardware PWM configuration
 #define PWM_0_OUT_IO_MUX PERIPHS_IO_MUX_GPIO4_U
 #define PWM_0_OUT_IO_NUM RGB_R_PIN
 #define PWM_0_OUT_IO_FUNC FUNC_GPIO4
@@ -40,10 +44,10 @@ color CurRGB;
 #define PWM_2_OUT_IO_NUM RGB_B_PIN
 #define PWM_2_OUT_IO_FUNC FUNC_GPIO5
 #define PWM_CHANNEL 3
-
-void ICACHE_FLASH_ATTR rgb_gpio_init(void);
-void ICACHE_FLASH_ATTR FluentColor(color* rgbi,color* rgbs,unsigned char step);
 void ICACHE_FLASH_ATTR RGB_PWM_Init(void);
-#endif
+void ICACHE_FLASH_ATTR FluentColor(color* rgbi,color* rgbs,unsigned char step);
+#endif//if use hard pwm 
+
+#endif//if use 3pins
 
 #endif

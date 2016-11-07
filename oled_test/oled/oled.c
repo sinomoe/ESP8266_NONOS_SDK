@@ -525,7 +525,7 @@ void ICACHE_FLASH_ATTR
 oled_demo_bmp1(void)
 {
 	OLED_Clear_Black(); 
-	OLED_DrawBMP(0,0,128,8,BMP5);
+	OLED_DrawBMP(0,0,128,8,BMP3);
 }
 
 /******************************************************************************
@@ -538,5 +538,5 @@ void ICACHE_FLASH_ATTR
 oled_demo_bmp2(void)
 {
 	OLED_Clear_Black(); 
-	OLED_DrawBMP(0,0,128,8,BMP6);
+	OLED_DrawBMP(0,0,128,8,BMP4);
 }
