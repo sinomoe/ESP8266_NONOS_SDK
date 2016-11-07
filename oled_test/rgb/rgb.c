@@ -17,7 +17,7 @@ rgb_gpio_init()
     gpio_init();
 }
 
-void ICACHE_FLASH_ATTR
+LOCAL void ICACHE_FLASH_ATTR
 timer_RGB_callback()
 {
     if(cnt<=STEP)
@@ -26,7 +26,7 @@ timer_RGB_callback()
         CurRGB.R=RGBi.R+(RGBs.R-RGBi.R)*cnt/STEP;
         CurRGB.G=RGBi.G+(RGBs.G-RGBi.G)*cnt/STEP;
         CurRGB.B=RGBi.B+(RGBs.B-RGBi.B)*cnt/STEP;
-        INFO("R:%d\tG:%d\tB:%d\t\n",CurRGB.R,CurRGB.G,CurRGB.B);//debug
+        INFO("CNT:%d\tR:%d\tG:%d\tB:%d\t\n",cnt,CurRGB.R,CurRGB.G,CurRGB.B);//debug
         cnt++;
     }
     else
