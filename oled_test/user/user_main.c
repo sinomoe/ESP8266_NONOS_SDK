@@ -256,13 +256,21 @@ void user_init(void)
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 
 	INFO("\r\nSystem started ...\r\n");
-
+/*
 	rgb_gpio_init();
 	INFO("GPIO READY\r\n");
 	os_timer_disarm(&timer0);
 	os_timer_setfn(&timer0,(os_timer_func_t *)timer0_callback,NULL);
 	os_timer_arm(&timer0,5000,1);
 	INFO("TIMER SET READY\r\n");
-
+*/
+	color c1,c2;
+	c1.R=0;
+	c1.G=100;
+	c1.B=255;
+	c2.R=100;
+	c2.G=255;
+	c2.B=0;
+	FluentColor(&c1,&c2,60);
 	oled_gpio_init();
 }

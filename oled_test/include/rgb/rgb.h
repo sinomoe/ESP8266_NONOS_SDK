@@ -6,6 +6,14 @@
 #include "eagle_soc.h"
 #include "osapi.h"
 
+typedef struct color
+{
+    unsigned char R;
+    unsigned char G;
+    unsigned char B;
+}color;
+
+
 #ifdef USE_RGB3PIN
 //RGB PIN¹²Ñô£¬GPIOµÍÊä³ö
 #define RGB_R_PIN   4
@@ -20,7 +28,7 @@
 #define RGB_B_OFF()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_B_PIN), 1)
 
 void ICACHE_FLASH_ATTR rgb_gpio_init(void);
-
+void ICACHE_FLASH_ATTR FluentColor(color* rgbi,color* rgbs,unsigned char step);
 #endif
 
 #endif
