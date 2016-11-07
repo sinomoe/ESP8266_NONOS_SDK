@@ -251,8 +251,8 @@ void user_init(void)
     	{PWM_1_OUT_IO_MUX,PWM_1_OUT_IO_FUNC,PWM_1_OUT_IO_NUM},     
     	{PWM_2_OUT_IO_MUX,PWM_2_OUT_IO_FUNC,PWM_2_OUT_IO_NUM},   
 	}; 
-	unsigned int duty[3]={2550,0,2550};
-	pwm_init(115, duty, PWM_CHANNEL,io_info);
+	unsigned int duty[3]={0,0,0};//0-255000
+	pwm_init(11500, duty, PWM_CHANNEL,io_info);
 
 	os_delay_us(1000000);
 	CFG_Load();
@@ -289,5 +289,5 @@ void user_init(void)
 	c2.G=255;
 	c2.B=0;
 	FluentColor(&c1,&c2,60);
-	oled_gpio_init();
+	//oled_gpio_init();
 }
