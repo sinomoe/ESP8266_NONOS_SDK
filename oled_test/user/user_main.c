@@ -30,15 +30,14 @@
 #include "ets_sys.h"
 #include "driver/uart.h"
 #include "os_type.h"
-#include "osapi.h"
 #include "mqtt.h"
 #include "wifi.h"
 #include "config.h"
 #include "debug.h"
-#include "gpio.h"
 #include "user_interface.h"
 #include "mem.h"
 #include "oled.h"
+#include "rgb.h"
 
 MQTT_Client mqttClient;
 LOCAL os_timer_t timer0;
@@ -53,43 +52,43 @@ char zt = 1;
 void ICACHE_FLASH_ATTR
 timer0_callback(){  
     if(zt == 1){  
-        GPIO_OUTPUT_SET(GPIO_ID_PIN(13), 0); //G
-		GPIO_OUTPUT_SET(GPIO_ID_PIN(5), 1); 
+        RGB_G_ON();
+		RGB_B_OFF(); 
 		INFO("GREEN\r\n");
         zt = 2; 
 		oled_demo_string();
 		return; 
     }
     if(zt == 2){  
-		GPIO_OUTPUT_SET(GPIO_ID_PIN(4), 0); //R
+		RGB_R_ON();
 		INFO("GREEN&RED\r\n");
         zt = 3; 
 		oled_demo_bmp1();
 		return; 
     }
 	if(zt == 3){  
-		GPIO_OUTPUT_SET(GPIO_ID_PIN(13), 1);   
+		RGB_G_OFF();   
 		INFO("RED\r\n");
         zt = 4;  
 		oled_demo_bmp2();
 		return;
     }  
     if(zt == 4){  
-		GPIO_OUTPUT_SET(GPIO_ID_PIN(5), 0); //B
+		RGB_B_ON();
 		INFO("RED&BLUE\r\n");
         zt = 5; 
 		oled_demo_string();
 		return; 
     }
 	if(zt == 5){  
-		GPIO_OUTPUT_SET(GPIO_ID_PIN(4), 1); 
+		RGB_R_OFF();
 		INFO("BLUE\r\n");
         zt = 6;  
 		oled_demo_bmp1();
 		return;
     } 
 	if(zt == 6){  
-		GPIO_OUTPUT_SET(GPIO_ID_PIN(13), 0); //G
+		RGB_G_ON();
 		INFO("BLUE&GREEN\r\n");
         zt = 1;  
 		oled_demo_bmp2();
@@ -257,10 +256,8 @@ void user_init(void)
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 
 	INFO("\r\nSystem started ...\r\n");
-	gpio_init();
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U,FUNC_GPIO13);//GREEN
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO5_U,FUNC_GPIO4);//RED
-	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO5_U,FUNC_GPIO5);//BLUE
+
+	rgb_gpio_init();
 	INFO("GPIO READY\r\n");
 	os_timer_disarm(&timer0);
 	os_timer_setfn(&timer0,(os_timer_func_t *)timer0_callback,NULL);

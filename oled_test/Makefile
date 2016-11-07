@@ -25,6 +25,7 @@ SUBDIRS=    \
 	user    \
 	mqtt   \
 	oled   \
+	rgb   \
 	modules  
 
 endif # } PDIR
@@ -52,6 +53,7 @@ COMPONENTS_eagle.app.v6 = \
 	user/libuser.a  \
 	mqtt/libmqtt.a  \
 	oled/liboled.a	\
+	rgb/librgb.a	\
 	modules/libmodules.a
 
 LINKFLAGS_eagle.app.v6 = \
@@ -124,7 +126,7 @@ DDEFINES +=				\
 # Required for each makefile to inherit from the parent
 #
 
-INCLUDES := $(INCLUDES) -I $(PDIR)include -I $(PDIR)include/mqtt -I $(PDIR)include/oled $(PDIR)include/rgb -I $(PDIR)include/modules
+INCLUDES := $(INCLUDES) -I $(PDIR)include -I $(PDIR)include/mqtt -I $(PDIR)include/oled -I $(PDIR)include/rgb -I $(PDIR)include/modules
 PDIR := ../$(PDIR)
 sinclude $(PDIR)Makefile
 
