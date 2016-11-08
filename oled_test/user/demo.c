@@ -29,7 +29,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("Red\r\n");
         zt = 2; 
-		//oled_demo_string();
+		oled_demo_string();
 		return; 
     }
     if(zt == 2){  
@@ -39,6 +39,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("RED&GREEN\r\n");
         zt = 3; 
+		OLED_Clear_Black_In_Page(0);
 		//oled_demo_bmp1();
 		return; 
     }
@@ -49,6 +50,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("GREEN\r\n");
         zt = 4;  
+		OLED_Clear_White_In_Page(1);
 		//oled_demo_bmp2();
 		return;
     }  
@@ -59,6 +61,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("GREEN&BLUE\r\n");
         zt = 5; 
+		OLED_Clear_White();
 		//oled_demo_string();
 		return; 
     }

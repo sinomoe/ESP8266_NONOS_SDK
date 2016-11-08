@@ -23,7 +23,7 @@ page等同于y坐标
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+void ICACHE_FLASH_ATTR
 IIC_Start()
 {
 	OLED_SCLK_Set() ;
@@ -38,7 +38,7 @@ IIC_Start()
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+void ICACHE_FLASH_ATTR
 IIC_Stop()
 {
     OLED_SCLK_Set() ;
@@ -54,7 +54,7 @@ IIC_Stop()
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+void ICACHE_FLASH_ATTR
 IIC_Wait_Ack()
 {
 	OLED_SCLK_Set() ;
@@ -67,7 +67,7 @@ IIC_Wait_Ack()
  * Parameters   : u8 IIC_Byte		what will be writen
  * Returns      : none
  *******************************************************************************/
-LOCAL void Write_IIC_Byte(u8 IIC_Byte)
+void Write_IIC_Byte(u8 IIC_Byte)
 {
 	u8 i;
 	u8 m,da;
@@ -97,7 +97,7 @@ LOCAL void Write_IIC_Byte(u8 IIC_Byte)
  * Parameters   : u8 IIC_Command			command will be writen
  * Returns      : none
  *******************************************************************************/
-LOCAL void Write_IIC_Command(u8 IIC_Command)
+void Write_IIC_Command(u8 IIC_Command)
 {
     IIC_Start();
     Write_IIC_Byte(0x78);            //Slave address,SA0=0
@@ -115,7 +115,7 @@ LOCAL void Write_IIC_Command(u8 IIC_Command)
  * Parameters   : u8 IIC_Data		data will be writen
  * Returns      : none
  *******************************************************************************/
-LOCAL void Write_IIC_Data(u8 IIC_Data)
+void Write_IIC_Data(u8 IIC_Data)
 {
     IIC_Start();
     Write_IIC_Byte(0x78);			//D/C#=0; R/W#=0
@@ -135,7 +135,7 @@ LOCAL void Write_IIC_Data(u8 IIC_Data)
 				  						cmd=1	write data to i2c
  * Returns      : none
  *******************************************************************************/
-LOCAL void OLED_WR_Byte(unsigned dat,unsigned cmd)
+void OLED_WR_Byte(unsigned dat,unsigned cmd)
 {
 	if(cmd)
 	{
@@ -154,7 +154,7 @@ LOCAL void OLED_WR_Byte(unsigned dat,unsigned cmd)
  				  u8 y		y row
  * Returns      : none
  *******************************************************************************/
-LOCAL void ICACHE_FLASH_ATTR
+void ICACHE_FLASH_ATTR
 OLED_Set_Pos(u8 x, u8 y) 
 { 	
     OLED_WR_Byte(0xb0+y,OLED_CMD);
@@ -224,14 +224,14 @@ OLED_Clear_White(void)
 		OLED_WR_Byte (0xb0+i,OLED_CMD);    //设置页地址（0~7）
 		OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
 		OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-		for(n=0;n<128;n++)OLED_WR_Byte(1,OLED_DATA); 
+		for(n=0;n<128;n++)OLED_WR_Byte(0xff,OLED_DATA); 
 	} //更新显示
 }
 
 /******************************************************************************
  * FunctionName : OLED_Clear_Black_In_Page
  * Description  : clean page(black)
- * Parameters   : none
+ * Parameters   : u8 page
  * Returns      : none
  *******************************************************************************/		   			   
 void ICACHE_FLASH_ATTR
@@ -247,7 +247,7 @@ OLED_Clear_Black_In_Page(u8 page)
 /******************************************************************************
  * FunctionName : OLED_Clear_White_In_Page
  * Description  : clean page(white)
- * Parameters   : none
+ * Parameters   : u8 page
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
@@ -257,7 +257,7 @@ OLED_Clear_White_In_Page(u8 page)
 	OLED_WR_Byte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
 	OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
 	OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-	for(n=0;n<128;n++)OLED_WR_Byte(1,OLED_DATA);  //更新显示
+	for(n=0;n<128;n++)OLED_WR_Byte(0xff,OLED_DATA);  //更新显示
 }
 
 /******************************************************************************
@@ -310,7 +310,7 @@ OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
  				  n
  * Returns      : result
  *******************************************************************************/
-LOCAL u32 ICACHE_FLASH_ATTR
+u32 ICACHE_FLASH_ATTR
 oled_pow(u8 m,u8 n)
 {
 	u32 result=1;	 
@@ -477,7 +477,7 @@ OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[])
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/					    
-LOCAL void ICACHE_FLASH_ATTR
+void ICACHE_FLASH_ATTR
 OLED_Init(void)
 { 	
     OLED_WR_Byte(0xAE,OLED_CMD);//--display off
