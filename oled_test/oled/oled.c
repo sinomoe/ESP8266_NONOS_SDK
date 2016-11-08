@@ -64,13 +64,13 @@ IIC_Wait_Ack()
 /******************************************************************************
  * FunctionName : Write_IIC_Byte
  * Description  : write a byte over i2c pin
- * Parameters   : unsigned char IIC_Byte		what will be writen
+ * Parameters   : u8 IIC_Byte		what will be writen
  * Returns      : none
  *******************************************************************************/
-LOCAL void Write_IIC_Byte(unsigned char IIC_Byte)
+LOCAL void Write_IIC_Byte(u8 IIC_Byte)
 {
-	unsigned char i;
-	unsigned char m,da;
+	u8 i;
+	u8 m,da;
 	da=IIC_Byte;
 	OLED_SCLK_Clr();
 	for(i=0;i<8;i++)		
@@ -94,10 +94,10 @@ LOCAL void Write_IIC_Byte(unsigned char IIC_Byte)
 /******************************************************************************
  * FunctionName : Write_IIC_Command
  * Description  : write ssd1306 comand through i2c
- * Parameters   : unsigned char IIC_Command			command will be writen
+ * Parameters   : u8 IIC_Command			command will be writen
  * Returns      : none
  *******************************************************************************/
-LOCAL void Write_IIC_Command(unsigned char IIC_Command)
+LOCAL void Write_IIC_Command(u8 IIC_Command)
 {
     IIC_Start();
     Write_IIC_Byte(0x78);            //Slave address,SA0=0
@@ -112,10 +112,10 @@ LOCAL void Write_IIC_Command(unsigned char IIC_Command)
 /******************************************************************************
  * FunctionName : Write_IIC_Data
  * Description  : write ssd1306 data through i2c
- * Parameters   : unsigned char IIC_Data		data will be writen
+ * Parameters   : u8 IIC_Data		data will be writen
  * Returns      : none
  *******************************************************************************/
-LOCAL void Write_IIC_Data(unsigned char IIC_Data)
+LOCAL void Write_IIC_Data(u8 IIC_Data)
 {
     IIC_Start();
     Write_IIC_Byte(0x78);			//D/C#=0; R/W#=0
@@ -150,12 +150,12 @@ LOCAL void OLED_WR_Byte(unsigned dat,unsigned cmd)
 /******************************************************************************
  * FunctionName : OLED_Set_Pos
  * Description  : set position
- * Parameters   : unsigned char x		x row
- 				  unsigned char y		y row
+ * Parameters   : u8 x		x row
+ 				  u8 y		y row
  * Returns      : none
  *******************************************************************************/
 LOCAL void ICACHE_FLASH_ATTR
-OLED_Set_Pos(unsigned char x, unsigned char y) 
+OLED_Set_Pos(u8 x, u8 y) 
 { 	
     OLED_WR_Byte(0xb0+y,OLED_CMD);
 	OLED_WR_Byte(((x&0xf0)>>4)|0x10,OLED_CMD);
@@ -240,7 +240,7 @@ OLED_Clear_White(void)
 void ICACHE_FLASH_ATTR
 OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
 {      	
-	unsigned char c=0,i=0;	
+	u8 c=0,i=0;	
 	c=chr-' ';//得到偏移后的值			
 	if(x>Max_Column-1)
 	{
@@ -330,7 +330,7 @@ OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
 void ICACHE_FLASH_ATTR
 OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
 {
-	unsigned char j=0;
+	u8 j=0;
 	while (chr[j]!='\0')
 	{		
 		OLED_ShowChar(x,y,chr[j],Char_Size);
@@ -412,18 +412,18 @@ OLED_ShowChineseString(u8 x,u8 y,u8 *s)
 /******************************************************************************
  * FunctionName : OLED_DrawBMP
  * Description  : 显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7
- * Parameters   : unsigned char x0			start x
- 				  unsigned char y0			start y
-				  unsigned char x1			
-				  unsigned char y1			
-				  const unsigned char BMP[]		
+ * Parameters   : u8 x0			start x
+ 				  u8 y0			start y
+				  u8 x1			
+				  u8 y1			
+				  const u8 BMP[]		
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_DrawBMP(unsigned char x0, unsigned char y0,unsigned char x1, unsigned char y1,const unsigned char BMP[])
+OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[])
 { 	
-	unsigned int j=0;
-	unsigned char x,y;
+	u32 j=0;
+	u8 x,y;
   
 	if(y1%8==0)
 		y=y1/8;      
