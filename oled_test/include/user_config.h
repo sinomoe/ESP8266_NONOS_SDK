@@ -6,6 +6,7 @@
 //#define USE_RGB1WIRE
 #define USE_HARDPWM
 //#define USE_SOFTPWM
-
+#define ALLOW_DEAL_MQTT_DATA
+//#define SHOW_RGB_CUL
 #endif
 

@@ -1,5 +1,6 @@
 #include "rgb.h"
 #include "user_interface.h"
+#include "user_config.h"
 #include "debug.h"
 
 LOCAL os_timer_t timer_RGB; //rgb计算回调参数
@@ -34,7 +35,9 @@ timer_RGB_callback()
         CurRGB.B=RGBi.B+(RGBs.B-RGBi.B)*cnt/STEP;
         pwm_set_duty (255000-1000*CurRGB.B, 2);
         pwm_start();
+        #ifdef SHOW_RGB_CUL
         INFO("CNT:%d\tR:%d\tG:%d\tB:%d\t\n",cnt,CurRGB.R,CurRGB.G,CurRGB.B);//debug
+        #endif
         cnt++;
     }
     else

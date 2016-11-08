@@ -10,7 +10,7 @@
 #define MQTT_HOST			"www.onesino.com" //or "mqtt.yourdomain.com"
 #define MQTT_PORT			1883
 #define MQTT_BUF_SIZE		1024
-#define MQTT_KEEPALIVE		120	 /*second*/
+#define MQTT_KEEPALIVE		60	 /*second*/
 
 #define MQTT_CLIENT_ID		"SINO_%08X"
 #define MQTT_USER			"SINO_USER"
