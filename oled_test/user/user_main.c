@@ -38,88 +38,9 @@
 #include "mem.h"
 #include "oled.h"
 #include "rgb.h"
-//#include "stdio.h"
-//#include "stdlib.h"
+#include "demo.h"
 
 MQTT_Client mqttClient;
-LOCAL os_timer_t timer0;
-LOCAL char zt = 1; 
-LOCAL color c1;
-
-//unsigned char strtmp[100]={0};
-
-/******************************************************************************
- * FunctionName : timer0_callback
- * Description  : 
- * Parameters   : none
- * Returns      : none
- *******************************************************************************/
-void ICACHE_FLASH_ATTR
-timer0_callback(){  
-    if(zt == 1){  
-        c1.R=255;
-		c1.G=0;
-		c1.B=0;
-		FluentColor(&CurRGB,&c1,60);
-		INFO("Red\r\n");
-        zt = 2; 
-		oled_demo_string();
-		//sprintf(strtmp,"%d",CurRGB.R);
-		//OLED_ShowString(0,4,strtmp,16);
-		return; 
-    }
-    if(zt == 2){  
-		c1.R=255;
-		c1.G=255;
-		c1.B=0;
-		FluentColor(&CurRGB,&c1,60);
-		INFO("RED&GREEN\r\n");
-        zt = 3; 
-		oled_demo_bmp1();
-		return; 
-    }
-	if(zt == 3){  
-		c1.R=0;
-		c1.G=255;
-		c1.B=0;
-		FluentColor(&CurRGB,&c1,60);
-		INFO("GREEN\r\n");
-        zt = 4;  
-		oled_demo_bmp2();
-		return;
-    }  
-    if(zt == 4){  
-		c1.R=0;
-		c1.G=255;
-		c1.B=255;
-		FluentColor(&CurRGB,&c1,60);
-		INFO("GREEN&BLUE\r\n");
-        zt = 5; 
-		oled_demo_string();
-		return; 
-    }
-	if(zt == 5){  
-		c1.R=0;
-		c1.G=0;
-		c1.B=255;
-		FluentColor(&CurRGB,&c1,60);
-		INFO("BLUE\r\n");
-        zt = 6;  
-		oled_demo_bmp1();
-		return;
-    } 
-	if(zt == 6){  
-		c1.R=255;
-		c1.G=0;
-		c1.B=255;
-		FluentColor(&CurRGB,&c1,60);
-		INFO("BLUE&RED\r\n");
-        zt = 1;  
-		oled_demo_bmp2();
-		return;
-    } 
-
-}  
 
 /******************************************************************************
  * FunctionName : wifiConnectCb
@@ -200,6 +121,7 @@ mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *da
 	dataBuf[data_len] = 0;
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
+	deal_response(topicBuf,dataBuf);
 	os_free(topicBuf);
 	os_free(dataBuf);
 }
@@ -253,7 +175,7 @@ user_rf_cal_sector_set(void)
 
 void user_init(void)
 {
-	RGB_PWM_Init();
+	//RGB_PWM_Init();
 	INFO("\r\nRGB PWM init ...\r\n");
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
@@ -272,14 +194,8 @@ void user_init(void)
 
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
-
 	INFO("\r\nSystem started ...\r\n");
-
-	os_timer_disarm(&timer0);
-	os_timer_setfn(&timer0,(os_timer_func_t *)timer0_callback,NULL);
-	os_timer_arm(&timer0,3000,1);
-	INFO("\r\nTIMER SET READY\r\n");
-
+	//OLED_RGB_Demo();
 	oled_gpio_init();
 	INFO("\r\nOLED init ...\r\n");
 }
