@@ -11,7 +11,7 @@ unsigned char cnt=0;
 #ifdef USE_RGB3PIN
 #ifdef USE_SOFTPWM
 void ICACHE_FLASH_ATTR
-rgb_gpio_init()
+RGB_GPIO_Init()
 {
     PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U,FUNC_GPIO13);//GREEN
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO5_U,FUNC_GPIO4);//RED
@@ -21,7 +21,7 @@ rgb_gpio_init()
 #endif//if use soft pwm 
 
 #ifdef USE_HARDPWM
-LOCAL void ICACHE_FLASH_ATTR
+void ICACHE_FLASH_ATTR
 timer_RGB_callback()
 {
     if(cnt<=STEP)

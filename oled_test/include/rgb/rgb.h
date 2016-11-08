@@ -29,7 +29,7 @@ color CurRGB;
 #define RGB_G_OFF()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_G_PIN), 1)
 #define RGB_B_ON()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_B_PIN), 0)
 #define RGB_B_OFF()    GPIO_OUTPUT_SET(GPIO_ID_PIN(RGB_B_PIN), 1)
-void ICACHE_FLASH_ATTR rgb_gpio_init(void);
+void ICACHE_FLASH_ATTR RGB_GPIO_Init(void);
 #endif//if use soft pwm
 
 #ifdef USE_HARDPWM
