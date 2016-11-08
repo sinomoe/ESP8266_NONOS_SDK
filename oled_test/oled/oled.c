@@ -151,7 +151,7 @@ void OLED_WR_Byte(unsigned dat,unsigned cmd)
  * FunctionName : OLED_Set_Pos
  * Description  : set position
  * Parameters   : u8 x		x row
- 				  u8 y		y row
+ 				  u8 y		page
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
@@ -265,7 +265,7 @@ OLED_Clear_White_In_Page(u8 page)
  * Description  : 在指定位置显示一个字符,包括部分字符
  * Parameters   : x	0~127
 				  y	0~7 page
-				  mode	0,反白显示;1,正常显示
+				  char 
 				  size	选择字体 16/12 
  * Returns      : none
  *******************************************************************************/
@@ -445,7 +445,7 @@ OLED_ShowChineseString(u8 x,u8 y,u8 *s)
  * FunctionName : OLED_DrawBMP
  * Description  : 显示显示BMP图片128×64起始点坐标(x,y),x的范围0～127，y为页的范围0～7
  * Parameters   : u8 x0			start x
- 				  u8 y0			start y
+ 				  u8 y0			start page
 				  u8 x1			
 				  u8 y1			
 				  const u8 BMP[]		
@@ -457,14 +457,10 @@ OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[])
 	u32 j=0;
 	u8 x,y;
   
-	if(y1%8==0)
-		y=y1/8;      
-	else
-		y=y1/8+1;
-	for(y=y0;y<y1;y++)
+	for(y=y0;y<=y1;y++)
 	{
 		OLED_Set_Pos(x0,y);
-    	for(x=x0;x<x1;x++)
+    	for(x=x0;x<=x1;x++)
 		{      
 	    	OLED_WR_Byte(BMP[j++],OLED_DATA);	    	
 		}
@@ -557,7 +553,7 @@ void ICACHE_FLASH_ATTR
 oled_demo_bmp1(void)
 {
 	OLED_Clear_Black(); 
-	OLED_DrawBMP(0,0,128,8,BMP3);
+	OLED_DrawBMP(0,0,127,7,BMP3);
 }
 
 /******************************************************************************
@@ -570,5 +566,5 @@ void ICACHE_FLASH_ATTR
 oled_demo_bmp2(void)
 {
 	OLED_Clear_Black(); 
-	OLED_DrawBMP(0,0,128,8,BMP4);
+	OLED_DrawBMP(0,0,127,7,BMP4);
 }
