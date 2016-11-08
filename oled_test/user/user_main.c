@@ -175,7 +175,7 @@ user_rf_cal_sector_set(void)
 
 void user_init(void)
 {
-	//RGB_PWM_Init();
+	RGB_PWM_Init();
 	INFO("\r\nRGB PWM init ...\r\n");
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
@@ -195,7 +195,8 @@ void user_init(void)
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
 	INFO("\r\nSystem started ...\r\n");
-	//OLED_RGB_Demo();
+	OLED_RGB_Demo();
+	system_update_cpu_freq(160);//set cpu freq,160MHz
 	oled_gpio_init();
 	INFO("\r\nOLED init ...\r\n");
 }

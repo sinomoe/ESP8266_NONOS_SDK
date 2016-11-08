@@ -23,7 +23,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("Red\r\n");
         zt = 2; 
-		oled_demo_string();
+		//oled_demo_string();
 		return; 
     }
     if(zt == 2){  
@@ -33,7 +33,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("RED&GREEN\r\n");
         zt = 3; 
-		oled_demo_bmp1();
+		//oled_demo_bmp1();
 		return; 
     }
 	if(zt == 3){  
@@ -43,7 +43,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("GREEN\r\n");
         zt = 4;  
-		oled_demo_bmp2();
+		//oled_demo_bmp2();
 		return;
     }  
     if(zt == 4){  
@@ -53,7 +53,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("GREEN&BLUE\r\n");
         zt = 5; 
-		oled_demo_string();
+		//oled_demo_string();
 		return; 
     }
 	if(zt == 5){  
@@ -63,7 +63,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("BLUE\r\n");
         zt = 6;  
-		oled_demo_bmp1();
+		//oled_demo_bmp1();
 		return;
     } 
 	if(zt == 6){  
@@ -73,7 +73,7 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("BLUE&RED\r\n");
         zt = 1;  
-		oled_demo_bmp2();
+		//oled_demo_bmp2();
 		return;
     } 
 }  

@@ -8,7 +8,9 @@ deal_response(char *topicBuf,char* dataBuf)
 {
     OLED_Clear_Black();
     char string[128]={0};
-    os_sprintf(string,"Receive topic: %s, data: %s ", topicBuf, dataBuf);
-    OLED_ShowString(0,0,string,16);
+    os_sprintf(string,"Topic:%s", topicBuf);
+    OLED_ShowString(0,0,string,8);
+	os_sprintf(string,"Data:%s", dataBuf);
+    OLED_ShowString(0,2,string,8);
     os_free(string);
 }
