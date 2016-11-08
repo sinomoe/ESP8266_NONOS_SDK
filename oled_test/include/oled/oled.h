@@ -54,5 +54,7 @@ void ICACHE_FLASH_ATTR oled_gpio_init(void);
 void ICACHE_FLASH_ATTR oled_demo_string(void);
 void ICACHE_FLASH_ATTR oled_demo_bmp1(void);
 void ICACHE_FLASH_ATTR oled_demo_bmp2(void);
+void ICACHE_FLASH_ATTR OLED_Clear_Black_In_Page(u8 page);
+void ICACHE_FLASH_ATTR OLED_Clear_White_In_Page(u8 page);
 
 #endif  

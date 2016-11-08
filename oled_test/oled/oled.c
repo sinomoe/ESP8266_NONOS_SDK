@@ -229,6 +229,38 @@ OLED_Clear_White(void)
 }
 
 /******************************************************************************
+ * FunctionName : OLED_Clear_Black_In_Page
+ * Description  : clean page(black)
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/		   			   
+void ICACHE_FLASH_ATTR
+OLED_Clear_Black_In_Page(u8 page)  
+{
+	u8 n;
+	OLED_WR_Byte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
+	OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
+	OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
+	for(n=0;n<128;n++)OLED_WR_Byte(0,OLED_DATA);  //更新显示
+}
+
+/******************************************************************************
+ * FunctionName : OLED_Clear_White_In_Page
+ * Description  : clean page(white)
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
+void ICACHE_FLASH_ATTR
+OLED_Clear_White_In_Page(u8 page)
+{  
+	u8 n;
+	OLED_WR_Byte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
+	OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
+	OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
+	for(n=0;n<128;n++)OLED_WR_Byte(1,OLED_DATA);  //更新显示
+}
+
+/******************************************************************************
  * FunctionName : OLED_ShowChar
  * Description  : 在指定位置显示一个字符,包括部分字符
  * Parameters   : x	0~127
