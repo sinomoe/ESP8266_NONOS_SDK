@@ -4,7 +4,7 @@
 #include "debug.h"
 
 LOCAL os_timer_t timer_RGB; //rgb计算回调参数
-LOCAL color RGBi,RGBs;
+color RGBi,RGBs,CurRGB;
 
 unsigned char STEP=0;
 unsigned char cnt=0;

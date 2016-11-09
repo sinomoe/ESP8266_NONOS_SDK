@@ -14,8 +14,6 @@ typedef struct color
     unsigned char B;
 }color;
 
-color CurRGB;
-
 #ifdef USE_RGB3PIN
 //RGB PIN¹²Ñô£¬GPIOµÍÊä³ö
 #define RGB_R_PIN   4
