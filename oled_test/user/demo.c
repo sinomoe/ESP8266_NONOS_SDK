@@ -8,6 +8,7 @@
 #include "deal_response.h"
 #include "user_config.h"
 #include "debug.h"
+#include "dht.h"
 
 LOCAL os_timer_t timer0;
 LOCAL char zt = 1; 
@@ -29,7 +30,18 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("Red\r\n");
         zt = 2; 
-		oled_demo_string();
+		//oled_demo_string();
+		int qtqt=dht_read11();
+		INFO("\r\nfeeeed %d\r\n",qtqt);
+		char string[128]={0};
+		int tempp=(int)dht_getTemperature();
+		int temppp=(int)dht_getHumidity();
+//		INFO("\r\nyyyyy%f\r\n",tempp);
+    	os_sprintf(string,"TEMP: %d",tempp);
+    	OLED_ShowString(0,5,string,8);
+		os_sprintf(string,"HUMI: %d",temppp);
+    	OLED_ShowString(64,5,string,8);
+    	os_free(string);
 		return; 
     }
     if(zt == 2){  
@@ -39,7 +51,6 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("RED&GREEN\r\n");
         zt = 3; 
-		OLED_Clear_Black_In_Page(0);
 		//oled_demo_bmp1();
 		return; 
     }
@@ -50,7 +61,6 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("GREEN\r\n");
         zt = 4;  
-		OLED_Clear_White_In_Page(1);
 		//oled_demo_bmp2();
 		return;
     }  
@@ -61,7 +71,6 @@ timer0_callback(){
 		FluentColor(&CurRGB,&c1,60);
 		INFO("GREEN&BLUE\r\n");
         zt = 5; 
-		OLED_Clear_White();
 		//oled_demo_string();
 		return; 
     }

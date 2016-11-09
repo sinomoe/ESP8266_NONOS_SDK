@@ -6,7 +6,10 @@
 void ICACHE_FLASH_ATTR
 deal_response(char *topicBuf,char* dataBuf)
 {
-    OLED_Clear_Black();
+    OLED_Clear_Black_In_Page(1);
+    OLED_Clear_Black_In_Page(2);
+    OLED_Clear_Black_In_Page(3);
+    OLED_Clear_Black_In_Page(4);
     char string[128]={0};
     os_sprintf(string,"Topic:%s", topicBuf);
     OLED_ShowString(0,0,string,8);
