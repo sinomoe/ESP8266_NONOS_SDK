@@ -35,11 +35,11 @@
 #include "debug.h"
 #include "user_interface.h"
 #include "mem.h"
-#include "oled.h"
 #include "rgb.h"
 #include "demo.h"
 #include "user_config.h"
-
+#include "simple_ui.h"
+extern color CurRGB;
 /******************************************************************************
  * FunctionName : user_rf_cal_sector_set
  * Description  : SDK just reversed 4 sectors, used for rf init data and paramters.
@@ -87,16 +87,19 @@ user_rf_cal_sector_set(void)
 
 void user_init(void)
 {
-	RGB_PWM_Init();
+    RGB_PWM_Init();
+    oled_gpio_init();
 	INFO("\r\nRGB PWM init ...\r\n");
+    UpdateSysBar("[SYS]Initializing");
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	os_delay_us(1000000);
 	CFG_Load();
+    OLED_Clear_Black_In_Page(7);
+    UpdateSysBar("[SYS]Loading Config");
 	MQTT_Demo();
 	INFO("\r\nSystem started ...\r\n");
 	OLED_RGB_Demo();
-	system_update_cpu_freq(80);//set cpu freq,160MHz
-	oled_gpio_init();
+	system_update_cpu_freq(160);//set cpu freq,160MHz
 	INFO("\r\nOLED init ...\r\n");
 }

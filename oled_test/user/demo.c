@@ -1,5 +1,5 @@
 #include "demo.h"
-#include "oled.h"
+#include "simple_ui.h"
 #include "rgb.h"
 #include "osapi.h"
 #include "mqtt.h"
@@ -12,7 +12,7 @@
 
 LOCAL os_timer_t timer0;
 LOCAL char zt = 1; 
-
+extern color CurRGB;
 /******************************************************************************
  * FunctionName : timer0_callback
  * Description  : 
@@ -120,8 +120,10 @@ void ICACHE_FLASH_ATTR
 wifiConnectCb(uint8_t status)
 {
 	if(status == STATION_GOT_IP){
+		UpdateSysBar("[WIFI]Connected");
 		MQTT_Connect(&mqttClient);
 	} else {
+		UpdateSysBar("[WIFI]Disconnected");
 		MQTT_Disconnect(&mqttClient);
 	}
 }
@@ -137,6 +139,7 @@ mqttConnectedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
+	UpdateSysBar("[MQTT]Connected");
 	MQTT_Subscribe(client, "/topic/0", 0);
 //	MQTT_Subscribe(client, "/mqtt/topic/1", 0);
 //	MQTT_Publish(client, "/mqtt/topic/0", "hello0", 6, 0, 0);
@@ -153,6 +156,7 @@ mqttDisconnectedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Disconnected\r\n");
+	UpdateSysBar("[MQTT]Disconnected");
 }
 
 /******************************************************************************
@@ -166,6 +170,7 @@ mqttPublishedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Published\r\n");
+	UpdateSysBar("[MQTT]Published");
 }
 
 /******************************************************************************
@@ -189,6 +194,7 @@ mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *da
 	dataBuf[data_len] = 0;
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
+	UpdateSysBar("[MQTT]Received");
 	#ifdef ALLOW_DEAL_MQTT_DATA
 	deal_response(topicBuf,dataBuf);
 	#endif
@@ -205,6 +211,7 @@ mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *da
 void ICACHE_FLASH_ATTR
 MQTT_Demo(void)
 {
+	UpdateSysBar("[MQTT]Initializing");
 	MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
 	//MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
 	MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
@@ -215,6 +222,7 @@ MQTT_Demo(void)
 	MQTT_OnPublished(&mqttClient, mqttPublishedCb);
 	MQTT_OnData(&mqttClient, mqttDataCb);
 
+	UpdateSysBar("[WIFI]Connecting");
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
 }
