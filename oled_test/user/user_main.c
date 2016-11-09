@@ -89,13 +89,13 @@ void user_init(void)
 {
     RGB_PWM_Init();
     oled_gpio_init();
+    ShowStartUp();
 	INFO("\r\nRGB PWM init ...\r\n");
     UpdateSysBar("[SYS]Initializing");
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	os_delay_us(1000000);
 	CFG_Load();
-    OLED_Clear_Black_In_Page(7);
     UpdateSysBar("[SYS]Loading Config");
 	MQTT_Demo();
 	INFO("\r\nSystem started ...\r\n");
