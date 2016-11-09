@@ -8,6 +8,7 @@
 #include "deal_response.h"
 #include "user_config.h"
 #include "debug.h"
+#include "dht.h"
 
 LOCAL os_timer_t timer0;
 LOCAL char zt = 1; 
@@ -30,6 +31,14 @@ timer0_callback(){
 		INFO("Red\r\n");
         zt = 2; 
 		//oled_demo_string();
+		char string[128]={0};
+		int tempp=(int)dht_getTemperature();
+		int humii=(int)dht_getHumidity();
+    	os_sprintf(string,"TEMP: %d",tempp);
+    	OLED_ShowString(0,5,string,8);
+		os_sprintf(string,"HUMI: %d",humii);
+    	OLED_ShowString(64,5,string,8);
+    	os_free(string);
 		return; 
     }
     if(zt == 2){  
