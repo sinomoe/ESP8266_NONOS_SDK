@@ -21,7 +21,6 @@ LOCAL char zt = 1;
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
 timer0_callback(){  
-    unsigned char strtmp[100]={0};
     color c1;
     if(zt == 1){  
         c1.R=255;
@@ -31,6 +30,7 @@ timer0_callback(){
 		INFO("Red\r\n");
         zt = 2; 
 		//oled_demo_string();
+		dht_read11();
 		char string[128]={0};
 		int tempp=(int)dht_getTemperature();
 		int humii=(int)dht_getHumidity();

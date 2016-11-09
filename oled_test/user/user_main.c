@@ -96,7 +96,7 @@ void user_init(void)
 	MQTT_Demo();
 	INFO("\r\nSystem started ...\r\n");
 	OLED_RGB_Demo();
-	system_update_cpu_freq(160);//set cpu freq,160MHz
+	system_update_cpu_freq(80);//set cpu freq,160MHz
 	oled_gpio_init();
 	INFO("\r\nOLED init ...\r\n");
 }
