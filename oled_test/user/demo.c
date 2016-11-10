@@ -37,7 +37,6 @@ timer0_callback(){
 		c1.G=255;
 		c1.B=0;
 		FluentColor(&CurRGB,&c1,60);
-		OLED_Clear_Black_In_Area(20,0,90,5);
 		INFO("RED&GREEN\r\n");
         zt = 3; 
 		//OLED_Demo_BMP1();
