@@ -42,7 +42,7 @@ void ICACHE_FLASH_ATTR OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size);
 void ICACHE_FLASH_ATTR OLED_ShowString(u8 x,u8 y,u8 x1,u8 y1,u8 *chr,u8 Char_Size);
 //void ICACHE_FLASH_ATTR OLED_Set_Pos(u8 x, u8 y);
 void ICACHE_FLASH_ATTR OLED_ShowChinese(u8 x,u8 y,u8 *s);
-void ICACHE_FLASH_ATTR OLED_ShowChineseString(u8 x,u8 y,u8 *s);
+void ICACHE_FLASH_ATTR OLED_ShowChineseString(u8 x,u8 y,u8 x1,u8 y1,u8 *s);
 void ICACHE_FLASH_ATTR OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[]);
 //void IIC_Start();
 //void IIC_Stop();

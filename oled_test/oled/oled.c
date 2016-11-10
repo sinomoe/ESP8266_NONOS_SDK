@@ -479,19 +479,24 @@ OLED_ShowChinese(u8 x,u8 y,u8 *s)
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_ShowChineseString(u8 x,u8 y,u8 *s)
+OLED_ShowChineseString(u8 x,u8 y,u8 x1,u8 y1,u8 *s)
 {    
-	u8 i=0,j=0;  	
+	u8 i=0,j=0;
+	u8 xtemp=x;  		  	
 	while(s[j]!='\0')
 	{
 		OLED_ShowChinese(x,y,s+2*i);
 		i++;
 		j+=2;//一个中文2个char
 		x+=16;
-		if(x>112)//超出部分自动换行（此处只针对GB162，如果是8x8改成120即可）
+		if(x>x1+1-16)//超出部分自动换行（此处只针对GB162，如果是8x8改成120即可）
 		{
-			x=0;
+			x=xtemp;
 			y+=2;//也是针对GB162，2page一行
+			if(y>y1)
+			{
+				return;
+			}
 		}
 	}
 }
@@ -593,7 +598,7 @@ void ICACHE_FLASH_ATTR
 OLED_Demo_String(void)
 {
 	OLED_Clear_Black(); 
-	OLED_ShowChineseString(0,0,"これが最最最後のこれが最最最後の");
+	OLED_ShowChineseString(40,2,120,6,"これが最最最後のこれが最最最後の");
 	OLED_ShowString(0,4,128,4,"0.96' OLED TEST",16);
     OLED_ShowString(0,6,128,7,"0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST",8);
 }
