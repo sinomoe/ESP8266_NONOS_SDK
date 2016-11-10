@@ -50,10 +50,10 @@ void ICACHE_FLASH_ATTR OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[]);
 //void Write_IIC_Data(u8 IIC_Data);
 //void Write_IIC_Byte(u8 IIC_Byte);
 //void IIC_Wait_Ack();
-void ICACHE_FLASH_ATTR oled_gpio_init(void);
-void ICACHE_FLASH_ATTR oled_demo_string(void);
-void ICACHE_FLASH_ATTR oled_demo_bmp1(void);
-void ICACHE_FLASH_ATTR oled_demo_bmp2(void);
+void ICACHE_FLASH_ATTR OLED_GPIO_Init(void);
+void ICACHE_FLASH_ATTR OLED_Demo_String(void);
+void ICACHE_FLASH_ATTR OLED_Demo_BMP1(void);
+void ICACHE_FLASH_ATTR OLED_Demo_BMP2(void);
 void ICACHE_FLASH_ATTR OLED_Clear_Black_In_Page(u8 page);
 void ICACHE_FLASH_ATTR OLED_Clear_White_In_Page(u8 page);
 

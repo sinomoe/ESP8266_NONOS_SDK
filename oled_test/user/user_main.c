@@ -88,7 +88,6 @@ user_rf_cal_sector_set(void)
 void user_init(void)
 {
     RGB_PWM_Init();
-    oled_gpio_init();
     ShowStartUp();
 	INFO("\r\nRGB PWM init ...\r\n");
     UpdateSysBar("[SYS]Initializing");

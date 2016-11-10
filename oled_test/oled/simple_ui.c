@@ -4,6 +4,12 @@
 #include "osapi.h"
 #include "mem.h"
 
+/******************************************************************************
+ * FunctionName : UpdateSysBar
+ * Description  : 
+ * Parameters   : char *string
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 UpdateSysBar(char *string)
 {
@@ -11,6 +17,12 @@ UpdateSysBar(char *string)
     OLED_ShowString(0,SYS_BAR_PAGE,string,8);
 }
 
+/******************************************************************************
+ * FunctionName : UpdateDHTBar
+ * Description  : 
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 UpdateDHTBar(void)
 {
@@ -25,8 +37,15 @@ UpdateDHTBar(void)
     os_free(string);
 }
 
+/******************************************************************************
+ * FunctionName : ShowStartUp
+ * Description  : show startup image
+ * Parameters   : none
+ * Returns      : none
+ *******************************************************************************/
 void ICACHE_FLASH_ATTR
 ShowStartUp(void)
 {
-    oled_demo_bmp1();
+    OLED_GPIO_Init();
+    OLED_Demo_BMP1();
 }

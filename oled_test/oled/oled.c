@@ -304,14 +304,14 @@ OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
 }
 
 /******************************************************************************
- * FunctionName : oled_pow
+ * FunctionName : OLED_Pow
  * Description  : m^n
  * Parameters   : m 
  				  n
  * Returns      : result
  *******************************************************************************/
 u32 ICACHE_FLASH_ATTR
-oled_pow(u8 m,u8 n)
+OLED_Pow(u8 m,u8 n)
 {
 	u32 result=1;	 
 	while(n--)result*=m;    
@@ -336,7 +336,7 @@ OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
 	u8 enshow=0;						   
 	for(t=0;t<len;t++)
 	{
-		temp=(num/oled_pow(10,len-t-1))%10;
+		temp=(num/OLED_Pow(10,len-t-1))%10;
 		if(enshow==0&&t<(len-1))
 		{
 			if(temp==0)
@@ -513,14 +513,14 @@ OLED_Init(void)
 }  
 
 /******************************************************************************
- * FunctionName : oled_gpio_init
+ * FunctionName : OLED_GPIO_Init
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 //for applications
 void ICACHE_FLASH_ATTR
-oled_gpio_init(void)
+OLED_GPIO_Init(void)
 {
     PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDI_U,FUNC_GPIO12);//SCL
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTMS_U,FUNC_GPIO14);//SDA
@@ -529,13 +529,13 @@ oled_gpio_init(void)
 }
 
 /******************************************************************************
- * FunctionName : oled_demo_string
+ * FunctionName : OLED_Demo_String
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-oled_demo_string(void)
+OLED_Demo_String(void)
 {
 	OLED_Clear_Black(); 
 	OLED_ShowChineseString(0,0,"これが恷恷恷瘁のこれが恷恷恷瘁の");
@@ -544,26 +544,26 @@ oled_demo_string(void)
 }
 
 /******************************************************************************
- * FunctionName : oled_demo_bmp1
+ * FunctionName : OLED_Demo_BMP1
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-oled_demo_bmp1(void)
+OLED_Demo_BMP1(void)
 {
 	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,127,7,BMP3);
 }
 
 /******************************************************************************
- * FunctionName : oled_demo_bmp2
+ * FunctionName : OLED_Demo_BMP2
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-oled_demo_bmp2(void)
+OLED_Demo_BMP2(void)
 {
 	OLED_Clear_Black(); 
 	OLED_DrawBMP(0,0,127,7,BMP4);
