@@ -4,7 +4,7 @@
 /*
 OLED的显存
 存放格式如下
-由于驱动刷新模式的限制，y row被定义成8个像素大小为8的page，每次刷新page内的所有像素
+由于驱动刷新模式的限制，y row被定义成8个像素大小为8的page，每次刷新page内的单纵行8像素
 page等同于y坐标
 |page| x row
 |[0] |	0 1 2 3 ... 127	
@@ -261,6 +261,50 @@ OLED_Clear_White_In_Page(u8 page)
 }
 
 /******************************************************************************
+ * FunctionName : OLED_Clear_White_In_Page
+ * Description  : clean page(white)
+ * Parameters   : u8 x		start x row
+ 				  u8 page	start page
+				  u8 x1		end x row
+				  u8 page1	end page
+ * Returns      : none
+ *******************************************************************************/
+void ICACHE_FLASH_ATTR
+OLED_Clear_White_In_Area(u8 x,u8 page,u8 x1,u8 page1)
+{  
+	u8 n;
+	do
+	{
+		OLED_Set_Pos(x,page);
+		for(n=0;n<x1+1-x;n++)OLED_WR_Byte(0xff,OLED_DATA);  //更新显示
+		page++;
+	}while(page!=page1);
+	
+}
+
+/******************************************************************************
+ * FunctionName : OLED_Clear_Black_In_Area
+ * Description  : clean page(black)
+ * Parameters   : u8 x		start x row
+ 				  u8 page	start page
+				  u8 x1		end x row
+				  u8 page1	end page
+ * Returns      : none
+ *******************************************************************************/
+void ICACHE_FLASH_ATTR
+OLED_Clear_Black_In_Area(u8 x,u8 page,u8 x1,u8 page1)
+{  
+	u8 n;
+	do
+	{
+		OLED_Set_Pos(x,page);
+		for(n=0;n<x1+1-x;n++)OLED_WR_Byte(0,OLED_DATA);  //更新显示
+		page++;
+	}while(page!=page1);
+	
+}
+
+/******************************************************************************
  * FunctionName : OLED_ShowChar
  * Description  : 在指定位置显示一个字符,包括部分字符
  * Parameters   : x	0~127
@@ -352,36 +396,48 @@ OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size2)
 
 /******************************************************************************
  * FunctionName : OLED_ShowString
- * Description  : 显示一个字符号串,默认只有两个字体大小8x16,6x8
- * Parameters   : u8 x		x row
- 				  u8 y		page
+ * Description  : 在区域块内显示一个字符串,默认只有两个字体大小8x16,6x8
+ * Parameters   : u8 x		区域块start xrow
+ 				  u8 y			 start page
+				  u8 x1		区域块end xrow
+ 				  u8 y1			 end page
 				  u8 *chr	chr point to 字符串
 				  u8 Char_Size 字体大小
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_ShowString(u8 x,u8 y,u8 *chr,u8 Char_Size)
+OLED_ShowString(u8 x,u8 y,u8 x1,u8 y1,u8 *chr,u8 Char_Size)
 {
 	u8 j=0;
+	u8 xtemp;
+	xtemp=x;
 	while (chr[j]!='\0')
 	{		
 		OLED_ShowChar(x,y,chr[j],Char_Size);
 		if(Char_Size==16)//default 8x16
 		{
 			x+=8;
-			if(x>120)//超出换行
+			if(x>x1+1-8)//超出换行
 			{
-				x=0;
-				y+=2;      
+				x=xtemp;
+				y+=2;
+				if(y>y1)
+				{
+					return;
+				}
 			}
 		}
 		else	//default 6x8
 		{
 			x+=6;
-			if(x>122)//超出换行
+			if(x>x1+1-6)//超出换行
 			{
-				x=0;
-				y+=1;      
+				x=xtemp;
+				y+=1;   
+				if(y>y1)
+				{
+					return;
+				}   
 			}
 		}
 		j++;
@@ -439,7 +495,6 @@ OLED_ShowChineseString(u8 x,u8 y,u8 *s)
 		}
 	}
 }
-
 
 /******************************************************************************
  * FunctionName : OLED_DrawBMP
@@ -539,8 +594,8 @@ OLED_Demo_String(void)
 {
 	OLED_Clear_Black(); 
 	OLED_ShowChineseString(0,0,"これが最最最後のこれが最最最後の");
-	OLED_ShowString(0,4,"0.96' OLED TEST",16);
-    OLED_ShowString(0,6,"0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST",8);
+	OLED_ShowString(0,4,128,4,"0.96' OLED TEST",16);
+    OLED_ShowString(0,6,128,7,"0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST",8);
 }
 
 /******************************************************************************

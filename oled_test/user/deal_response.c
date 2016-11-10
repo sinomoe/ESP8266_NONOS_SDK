@@ -12,8 +12,8 @@ deal_response(char *topicBuf,char* dataBuf)
     OLED_Clear_Black_In_Page(4);
     char string[128]={0};
     os_sprintf(string,"Topic:%s", topicBuf);
-    OLED_ShowString(0,0,string,8);
+    OLED_ShowString(0,0,127,7,string,8);
 	os_sprintf(string,"Data:%s", dataBuf);
-    OLED_ShowString(0,2,string,8);
+    OLED_ShowString(0,2,127,7,string,8);
     os_free(string);
 }
