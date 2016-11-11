@@ -9,8 +9,8 @@
 #include "user_config.h"
 #include "debug.h"
 
-LOCAL os_timer_t timer0;
-LOCAL char zt = 1; 
+os_timer_t timer0,DHTtimer;
+char zt = 1; 
 extern color CurRGB;
 /******************************************************************************
  * FunctionName : timer0_callback
@@ -29,7 +29,6 @@ timer0_callback(){
 		INFO("Red\r\n");
         zt = 2; 
 		//OLED_Demo_String();
-		UpdateDHTBar();
 		return; 
     }
     if(zt == 2){  
@@ -133,6 +132,7 @@ mqttConnectedCb(uint32_t *args)
 	INFO("MQTT: Connected\r\n");
 	UpdateSysBar("[MQTT]Connected");
 	MQTT_Subscribe(client, "/topic/0", 0);
+	MQTT_Subscribe(client, "/rgb/1", 0);
 //	MQTT_Subscribe(client, "/mqtt/topic/1", 0);
 //	MQTT_Publish(client, "/mqtt/topic/0", "hello0", 6, 0, 0);
 }
@@ -228,4 +228,18 @@ MQTTDemoPublish(const u8* topic,const u8* message,int qos,int retain)
 		len++;
 	}
 	MQTT_Publish(&mqttClient, topic, message, len, qos, retain);
+}
+
+void ICACHE_FLASH_ATTR
+DHTtimer_callback(void)
+{
+	UpdateDHTBar();
+}
+
+void ICACHE_FLASH_ATTR
+DHTPublish(void)
+{
+	os_timer_disarm(&DHTtimer);
+	os_timer_setfn(&DHTtimer,(os_timer_func_t *)DHTtimer_callback,NULL);
+	os_timer_arm(&DHTtimer,10000,1);
 }

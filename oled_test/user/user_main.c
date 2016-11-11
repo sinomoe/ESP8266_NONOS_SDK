@@ -97,6 +97,7 @@ void user_init(void)
 	CFG_Load();
     UpdateSysBar("[SYS]Loading Config");
 	MQTT_Demo();
+    DHTPublish();
 	INFO("\r\nSystem started ...\r\n");
 	OLED_RGB_Demo();
 	system_update_cpu_freq(160);//set cpu freq,160MHz
