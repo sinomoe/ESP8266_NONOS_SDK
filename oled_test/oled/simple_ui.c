@@ -28,12 +28,16 @@ UpdateDHTBar(void)
 {
     dht_read11();
 	char string[128]={0};
-	int tempp=(int)dht_getTemperature();
-	int humii=(int)dht_getHumidity();
+    uint8_t* DHTData;
+    DHTData=DHTGet();
+	char tempp=(char)DHTData[1];
+	u8 humii=(u8)DHTData[0];
     os_sprintf(string,"TEMP: %d",tempp);
     OLED_ShowString(0,DHT_BAR_PAGE,63,DHT_BAR_PAGE,string,8);
+    MQTTDemoPublish("/dht/temp",string,0,0);
 	os_sprintf(string,"HUMI: %d",humii);
     OLED_ShowString(64,DHT_BAR_PAGE,127,DHT_BAR_PAGE,string,8);
+    MQTTDemoPublish("/dht/humi",string,0,0);
     os_free(string);
 }
 

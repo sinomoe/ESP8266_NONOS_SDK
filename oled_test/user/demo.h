@@ -4,5 +4,6 @@
 
 void ICACHE_FLASH_ATTR  OLED_RGB_Demo(void);
 void ICACHE_FLASH_ATTR  MQTT_Demo(void);
+void ICACHE_FLASH_ATTR MQTTDemoPublish(const u8* topic,const u8* message,int qos,int retain);
 
 #endif

@@ -44,9 +44,9 @@
 
 #define COMBINE_HIGH_AND_LOW_BYTE(byte_high, byte_low)  (((byte_high) << 8) | (byte_low))
 
-static double dht_humidity;
-static double dht_temperature;
-
+static uint8_t dht_humidity;
+static uint8_t dht_temperature;
+int8_t data[2];
 static uint8_t dht_bytes[5];  // buffer to receive data
 static int dht_readSensor(uint8_t wakeupDelay);
 
@@ -55,26 +55,20 @@ static int dht_readSensor(uint8_t wakeupDelay);
 // PUBLIC
 //
 
-// return values:
-// Humidity
-double dht_getHumidity(void)
+uint8_t* ICACHE_FLASH_ATTR
+DHTGet(void)
 {
-    return dht_humidity;
+    data[0]=dht_humidity;
+    data[1]=dht_temperature;
+    return data;
 }
-
-// return values:
-// Temperature
-double dht_getTemperature(void)
-{
-    return dht_temperature;
-}
-
 
 // return values:
 // DHTLIB_OK
 // DHTLIB_ERROR_CHECKSUM
 // DHTLIB_ERROR_TIMEOUT
-int dht_read11(void)
+int ICACHE_FLASH_ATTR
+dht_read11(void)
 {
     // READ VALUES
     int rv = dht_readSensor( DHTLIB_DHT11_WAKEUP);
@@ -105,7 +99,8 @@ int dht_read11(void)
 // return values:
 // DHTLIB_OK
 // DHTLIB_ERROR_TIMEOUT
-int dht_readSensor(uint8_t wakeupDelay)
+int ICACHE_FLASH_ATTR
+dht_readSensor(uint8_t wakeupDelay)
 {
     // INIT BUFFERVAR TO RECEIVE DATA
     uint8_t mask = 128;

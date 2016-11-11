@@ -218,3 +218,14 @@ MQTT_Demo(void)
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
 }
+
+void ICACHE_FLASH_ATTR
+MQTTDemoPublish(const u8* topic,const u8* message,int qos,int retain)
+{
+	u8 len=0,i;
+	for(i=0;message[i]!='\0';i++)
+	{
+		len++;
+	}
+	MQTT_Publish(&mqttClient, topic, message, len, qos, retain);
+}

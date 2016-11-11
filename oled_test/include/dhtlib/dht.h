@@ -24,7 +24,7 @@
 #define DHTLIB_OK                0
 #define DHTLIB_ERROR_CHECKSUM   -1
 #define DHTLIB_ERROR_TIMEOUT    -2
-#define DHTLIB_INVALID_VALUE    -999
+#define DHTLIB_INVALID_VALUE    -59
 
 #define DHTLIB_DHT11_WAKEUP     18
 #define DHTLIB_DHT_WAKEUP       1
@@ -52,10 +52,9 @@
 // DHTLIB_ERROR_CHECKSUM
 // DHTLIB_ERROR_TIMEOUT
 
-int dht_read11(void);
+int ICACHE_FLASH_ATTR dht_read11(void);
 
-double dht_getHumidity(void);
-double dht_getTemperature(void);
+uint8_t* ICACHE_FLASH_ATTR DHTGet(void);
 
 #endif
 //
