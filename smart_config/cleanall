@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "STARTING"
+echo "!!!cleaning project!!!"
+make clean
+echo "!!!done!!!"
+echo "!!!cleaning /bins!!!"
+rm -f ../bin/eagle.flash.bin
+echo "rm:  ../bin/eagle.flash.bin has been removed"
+rm -f ../bin/eagle.irom0text.bin
+echo "rm:  ../bin/eagle.irom0text.bin has been removed"
+rm -f ../bin/eagle.dump
+echo "rm:  ../bin/eagle.dump has been removed"
+rm -f ../bin/eagle.S
+echo "rm:  ../bin/eagle.S has been removed"
+echo "!!!done!!!"
+echo "NOW EVERYTHING HAS BEEN CLEANED"
