@@ -108,3 +108,21 @@ CFG_Load()
 	}
 
 }
+
+void ICACHE_FLASH_ATTR 
+CFG_Update(char essid[128], char passwd[128],char host[64], uint32_t port,char mqtt_user[32], char mqtt_pass[32])
+{
+	//Save configuration to the memory
+	saveFlag.flag  = 1;
+	os_sprintf((char *)sysCfg.sta_ssid, "%s", essid);
+	os_sprintf((char *)sysCfg.sta_pwd, "%s", passwd);
+	os_sprintf((char *)sysCfg.mqtt_host, "%s", host);
+
+	sysCfg.mqtt_port = port;
+
+	//save MQTT user & password
+	os_sprintf((char *)sysCfg.mqtt_user, "%s", mqtt_user);
+	os_sprintf((char *)sysCfg.mqtt_pass, "%s", mqtt_pass);
+
+	CFG_Save();
+}
