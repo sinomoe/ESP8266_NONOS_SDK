@@ -134,6 +134,7 @@ $(PDIR)include -I	\
 $(PDIR)include/mqtt -I	\
 $(PDIR)include/oled -I	\
 $(PDIR)include/rgb -I	\
+$(PDIR)include/driver -I	\
 $(PDIR)include/dhtlib -I	\
 $(PDIR)include/modules
 PDIR := ../$(PDIR)
