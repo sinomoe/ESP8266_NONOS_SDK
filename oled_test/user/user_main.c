@@ -40,6 +40,12 @@
 #include "wifidemo.h"
 
 extern color CurRGB;
+os_timer_t main_Timer0;
+void ICACHE_FLASH_ATTR
+main_Timer0_CallBack()
+{
+    OLED_ClearBlack(); 
+}
 /******************************************************************************
  * FunctionName : user_rf_cal_sector_set
  * Description  : SDK just reversed 4 sectors, used for rf init data and paramters.
@@ -102,5 +108,7 @@ void user_init(void)
 	INFO("\r\nSystem started ...\r\n");
 	RGBDemo_Init();
 	system_update_cpu_freq(160);//set cpu freq,160MHz
-	INFO("\r\nOLED init ...\r\n");
+    os_timer_disarm(&main_Timer0);
+	os_timer_setfn(&main_Timer0,(os_timer_func_t *)main_Timer0_CallBack,NULL);
+	os_timer_arm(&main_Timer0,3000,0);
 }
