@@ -14,10 +14,10 @@ void ICACHE_FLASH_ATTR
 wifiConnectCb(uint8_t status)
 {
 	if(status == STATION_GOT_IP){
-		UpdateSysBar("[WIFI]Connected");
+		UI_UpdateSysBar("[WIFI]Connected");
 		MQTT_Connect(&mqttClient);
 	} else {
-		UpdateSysBar("[WIFI]Disconnected");
+		UI_UpdateSysBar("[WIFI]Disconnected");
 		MQTT_Disconnect(&mqttClient);
 	}
 }
@@ -25,7 +25,7 @@ wifiConnectCb(uint8_t status)
 void ICACHE_FLASH_ATTR
 WIFIDemo_InitConnection(void)
 {
-	UpdateSysBar("[WIFI]Connecting");
+	UI_UpdateSysBar("[WIFI]Connecting");
 	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
 	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
 }

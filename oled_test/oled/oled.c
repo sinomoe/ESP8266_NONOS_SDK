@@ -1,4 +1,4 @@
-	#include "oled.h"
+#include "oled.h"
 #include "oledfont.h"
 #include "oledbmp.h"
 /*
@@ -18,13 +18,13 @@ page等同于y坐标
 */
 
 /******************************************************************************
- * FunctionName : IIC_Start
+ * FunctionName : OLED_IIC_Start
  * Description  : I2C start signal
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-IIC_Start()
+OLED_IIC_Start()
 {
 	OLED_SCLK_Set() ;
 	OLED_SDIN_Set();
@@ -33,13 +33,13 @@ IIC_Start()
 }
 
 /******************************************************************************
- * FunctionName : IIC_Stop
+ * FunctionName : OLED_IIC_Stop
  * Description  : I2C stop signal
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-IIC_Stop()
+OLED_IIC_Stop()
 {
     OLED_SCLK_Set() ;
 //	OLED_SCLK_Clr();
@@ -49,25 +49,25 @@ IIC_Stop()
 }
 
 /******************************************************************************
- * FunctionName : IIC_Wait_Ack
- * Description  : IIC_Wait_Ack
+ * FunctionName : OLED_IIC_WaitAck
+ * Description  : OLED_IIC_WaitAck
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-IIC_Wait_Ack()
+OLED_IIC_WaitAck()
 {
 	OLED_SCLK_Set() ;
 	OLED_SCLK_Clr();
 }
 
 /******************************************************************************
- * FunctionName : Write_IIC_Byte
+ * FunctionName : OLED_IIC_WriteByte
  * Description  : write a byte over i2c pin
  * Parameters   : u8 IIC_Byte		what will be writen
  * Returns      : none
  *******************************************************************************/
-void Write_IIC_Byte(u8 IIC_Byte)
+void OLED_IIC_WriteByte(u8 IIC_Byte)
 {
 	u8 i;
 	u8 m,da;
@@ -92,176 +92,176 @@ void Write_IIC_Byte(u8 IIC_Byte)
 }
 
 /******************************************************************************
- * FunctionName : Write_IIC_Command
+ * FunctionName : OLED_IIC_WriteCommand
  * Description  : write ssd1306 comand through i2c
  * Parameters   : u8 IIC_Command			command will be writen
  * Returns      : none
  *******************************************************************************/
-void Write_IIC_Command(u8 IIC_Command)
+void OLED_IIC_WriteCommand(u8 IIC_Command)
 {
-    IIC_Start();
-    Write_IIC_Byte(0x78);            //Slave address,SA0=0
-	IIC_Wait_Ack();	
-    Write_IIC_Byte(0x00);			//write command
-	IIC_Wait_Ack();	
-    Write_IIC_Byte(IIC_Command); 
-	IIC_Wait_Ack();	
-    IIC_Stop();
+    OLED_IIC_Start();
+    OLED_IIC_WriteByte(0x78);            //Slave address,SA0=0
+	OLED_IIC_WaitAck();	
+    OLED_IIC_WriteByte(0x00);			//write command
+	OLED_IIC_WaitAck();	
+    OLED_IIC_WriteByte(IIC_Command); 
+	OLED_IIC_WaitAck();	
+    OLED_IIC_Stop();
 }
 
 /******************************************************************************
- * FunctionName : Write_IIC_Data
+ * FunctionName : OLED_IIC_WriteData
  * Description  : write ssd1306 data through i2c
  * Parameters   : u8 IIC_Data		data will be writen
  * Returns      : none
  *******************************************************************************/
-void Write_IIC_Data(u8 IIC_Data)
+void OLED_IIC_WriteData(u8 IIC_Data)
 {
-    IIC_Start();
-    Write_IIC_Byte(0x78);			//D/C#=0; R/W#=0
-	IIC_Wait_Ack();	
-    Write_IIC_Byte(0x40);			//write data
-	IIC_Wait_Ack();	
-    Write_IIC_Byte(IIC_Data);
-	IIC_Wait_Ack();	
-    IIC_Stop();
+    OLED_IIC_Start();
+    OLED_IIC_WriteByte(0x78);			//D/C#=0; R/W#=0
+	OLED_IIC_WaitAck();	
+    OLED_IIC_WriteByte(0x40);			//write data
+	OLED_IIC_WaitAck();	
+    OLED_IIC_WriteByte(IIC_Data);
+	OLED_IIC_WaitAck();	
+    OLED_IIC_Stop();
 }
 
 /******************************************************************************
- * FunctionName : OLED_WR_Byte
+ * FunctionName : OLED_WriteByte
  * Description  : 
  * Parameters   : unsigned dat
 				  unsigned cmd			cmd=0	write command to i2c
 				  						cmd=1	write data to i2c
  * Returns      : none
  *******************************************************************************/
-void OLED_WR_Byte(unsigned dat,unsigned cmd)
+void OLED_WriteByte(unsigned dat,unsigned cmd)
 {
 	if(cmd)
 	{
-        Write_IIC_Data(dat);
+        OLED_IIC_WriteData(dat);
     }
 	else
 	{
-        Write_IIC_Command(dat);	
+        OLED_IIC_WriteCommand(dat);	
 	}
 }
 
 /******************************************************************************
- * FunctionName : OLED_Set_Pos
+ * FunctionName : OLED_SetPos
  * Description  : set position
  * Parameters   : u8 x		x row
  				  u8 y		page
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Set_Pos(u8 x, u8 y) 
+OLED_SetPos(u8 x, u8 y) 
 { 	
-    OLED_WR_Byte(0xb0+y,OLED_CMD);
-	OLED_WR_Byte(((x&0xf0)>>4)|0x10,OLED_CMD);
-	OLED_WR_Byte((x&0x0f),OLED_CMD); 
+    OLED_WriteByte(0xb0+y,OLED_CMD);
+	OLED_WriteByte(((x&0xf0)>>4)|0x10,OLED_CMD);
+	OLED_WriteByte((x&0x0f),OLED_CMD); 
 }
 
 /******************************************************************************
- * FunctionName : OLED_Display_On
+ * FunctionName : OLED_DispOn
  * Description  : enable oled disp
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Display_On(void)
+OLED_DispOn(void)
 {
-	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC命令
-	OLED_WR_Byte(0X14,OLED_CMD);  //DCDC ON
-	OLED_WR_Byte(0XAF,OLED_CMD);  //DISPLAY ON
+	OLED_WriteByte(0X8D,OLED_CMD);  //SET DCDC命令
+	OLED_WriteByte(0X14,OLED_CMD);  //DCDC ON
+	OLED_WriteByte(0XAF,OLED_CMD);  //DISPLAY ON
 }
 
 /******************************************************************************
- * FunctionName : OLED_Display_Off
+ * FunctionName : OLED_DispOff
  * Description  : disable oled disp
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Display_Off(void)
+OLED_DispOff(void)
 {
-	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC命令
-	OLED_WR_Byte(0X10,OLED_CMD);  //DCDC OFF
-	OLED_WR_Byte(0XAE,OLED_CMD);  //DISPLAY OFF
+	OLED_WriteByte(0X8D,OLED_CMD);  //SET DCDC命令
+	OLED_WriteByte(0X10,OLED_CMD);  //DCDC OFF
+	OLED_WriteByte(0XAE,OLED_CMD);  //DISPLAY OFF
 }
 
 /******************************************************************************
- * FunctionName : OLED_Clear_Black
+ * FunctionName : OLED_ClearBlack
  * Description  : clean disp(black)
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/		   			   
 void ICACHE_FLASH_ATTR
-OLED_Clear_Black(void)  
+OLED_ClearBlack(void)  
 {  
 	u8 i,n;		    
 	for(i=0;i<8;i++)  
 	{  
-		OLED_WR_Byte (0xb0+i,OLED_CMD);    //设置页地址（0~7）
-		OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
-		OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-		for(n=0;n<128;n++)OLED_WR_Byte(0,OLED_DATA); 
+		OLED_WriteByte (0xb0+i,OLED_CMD);    //设置页地址（0~7）
+		OLED_WriteByte (0x00,OLED_CMD);      //设置显示位置—列低地址
+		OLED_WriteByte (0x10,OLED_CMD);      //设置显示位置—列高地址   
+		for(n=0;n<128;n++)OLED_WriteByte(0,OLED_DATA); 
 	} //更新显示
 }
 
 /******************************************************************************
- * FunctionName : OLED_Clear_White
+ * FunctionName : OLED_ClearWhite
  * Description  : clean disp(white)
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Clear_White(void)  
+OLED_ClearWhite(void)  
 {  
 	u8 i,n;		    
 	for(i=0;i<8;i++)  
 	{  
-		OLED_WR_Byte (0xb0+i,OLED_CMD);    //设置页地址（0~7）
-		OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
-		OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-		for(n=0;n<128;n++)OLED_WR_Byte(0xff,OLED_DATA); 
+		OLED_WriteByte (0xb0+i,OLED_CMD);    //设置页地址（0~7）
+		OLED_WriteByte (0x00,OLED_CMD);      //设置显示位置—列低地址
+		OLED_WriteByte (0x10,OLED_CMD);      //设置显示位置—列高地址   
+		for(n=0;n<128;n++)OLED_WriteByte(0xff,OLED_DATA); 
 	} //更新显示
 }
 
 /******************************************************************************
- * FunctionName : OLED_Clear_Black_In_Page
+ * FunctionName : OLED_ClearBlackInPage
  * Description  : clean page(black)
  * Parameters   : u8 page
  * Returns      : none
  *******************************************************************************/		   			   
 void ICACHE_FLASH_ATTR
-OLED_Clear_Black_In_Page(u8 page)  
+OLED_ClearBlackInPage(u8 page)  
 {
 	u8 n;
-	OLED_WR_Byte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
-	OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
-	OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-	for(n=0;n<128;n++)OLED_WR_Byte(0,OLED_DATA);  //更新显示
+	OLED_WriteByte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
+	OLED_WriteByte (0x00,OLED_CMD);      //设置显示位置—列低地址
+	OLED_WriteByte (0x10,OLED_CMD);      //设置显示位置—列高地址   
+	for(n=0;n<128;n++)OLED_WriteByte(0,OLED_DATA);  //更新显示
 }
 
 /******************************************************************************
- * FunctionName : OLED_Clear_White_In_Page
+ * FunctionName : OLED_ClearWhiteInPage
  * Description  : clean page(white)
  * Parameters   : u8 page
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Clear_White_In_Page(u8 page)
+OLED_ClearWhiteInPage(u8 page)
 {  
 	u8 n;
-	OLED_WR_Byte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
-	OLED_WR_Byte (0x00,OLED_CMD);      //设置显示位置—列低地址
-	OLED_WR_Byte (0x10,OLED_CMD);      //设置显示位置—列高地址   
-	for(n=0;n<128;n++)OLED_WR_Byte(0xff,OLED_DATA);  //更新显示
+	OLED_WriteByte (0xb0+page,OLED_CMD);    //设置页地址（0~7）
+	OLED_WriteByte (0x00,OLED_CMD);      //设置显示位置—列低地址
+	OLED_WriteByte (0x10,OLED_CMD);      //设置显示位置—列高地址   
+	for(n=0;n<128;n++)OLED_WriteByte(0xff,OLED_DATA);  //更新显示
 }
 
 /******************************************************************************
- * FunctionName : OLED_Clear_White_In_Page
+ * FunctionName : OLED_ClearWhiteInPage
  * Description  : clean page(white)
  * Parameters   : u8 x		start x row
  				  u8 page	start page
@@ -270,20 +270,20 @@ OLED_Clear_White_In_Page(u8 page)
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Clear_White_In_Area(u8 x,u8 page,u8 x1,u8 page1)
+OLED_ClearWhiteInArea(u8 x,u8 page,u8 x1,u8 page1)
 {  
 	u8 n;
 	do
 	{
-		OLED_Set_Pos(x,page);
-		for(n=0;n<x1+1-x;n++)OLED_WR_Byte(0xff,OLED_DATA);  //更新显示
+		OLED_SetPos(x,page);
+		for(n=0;n<x1+1-x;n++)OLED_WriteByte(0xff,OLED_DATA);  //更新显示
 		page++;
 	}while(page!=page1);
 	
 }
 
 /******************************************************************************
- * FunctionName : OLED_Clear_Black_In_Area
+ * FunctionName : OLED_ClearBlackInArea
  * Description  : clean page(black)
  * Parameters   : u8 x		start x row
  				  u8 page	start page
@@ -292,13 +292,13 @@ OLED_Clear_White_In_Area(u8 x,u8 page,u8 x1,u8 page1)
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-OLED_Clear_Black_In_Area(u8 x,u8 page,u8 x1,u8 page1)
+OLED_ClearBlackInArea(u8 x,u8 page,u8 x1,u8 page1)
 {  
 	u8 n;
 	do
 	{
-		OLED_Set_Pos(x,page);
-		for(n=0;n<x1+1-x;n++)OLED_WR_Byte(0,OLED_DATA);  //更新显示
+		OLED_SetPos(x,page);
+		for(n=0;n<x1+1-x;n++)OLED_WriteByte(0,OLED_DATA);  //更新显示
 		page++;
 	}while(page!=page1);
 	
@@ -332,18 +332,18 @@ OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size)
 	}
 	if(Char_Size ==16)
 	{
-        OLED_Set_Pos(x,y);	
+        OLED_SetPos(x,y);	
 		for(i=0;i<8;i++)
-		OLED_WR_Byte(F8X16[c*16+i],OLED_DATA);
-		OLED_Set_Pos(x,y+1);
+		OLED_WriteByte(F8X16[c*16+i],OLED_DATA);
+		OLED_SetPos(x,y+1);
 		for(i=0;i<8;i++)
-		OLED_WR_Byte(F8X16[c*16+i+8],OLED_DATA);
+		OLED_WriteByte(F8X16[c*16+i+8],OLED_DATA);
 	}
 	else 
     {	
-		OLED_Set_Pos(x,y);
+		OLED_SetPos(x,y);
 		for(i=0;i<6;i++)
-		OLED_WR_Byte(F6x8[c][i],OLED_DATA);
+		OLED_WriteByte(F6x8[c][i],OLED_DATA);
 	}
 }
 
@@ -458,15 +458,15 @@ OLED_ShowChinese(u8 x,u8 y,u8 *s)
 	{
 		if((hz16[k].Index[0]==*(s))&&(hz16[k].Index[1]==*(s+1)))//判断是否有这个字
 		{
-			OLED_Set_Pos(x,y);	
+			OLED_SetPos(x,y);	
     		for(t=0;t<16;t++)
 			{
-				OLED_WR_Byte(hz16[k].Msk[t],OLED_DATA);
+				OLED_WriteByte(hz16[k].Msk[t],OLED_DATA);
 			}	
-			OLED_Set_Pos(x,y+1);	
+			OLED_SetPos(x,y+1);	
     		for(t=0;t<16;t++)
 			{	
-				OLED_WR_Byte(hz16[k].Msk[t+16],OLED_DATA);
+				OLED_WriteByte(hz16[k].Msk[t+16],OLED_DATA);
     		}
 		}
 	}
@@ -519,10 +519,10 @@ OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[])
   
 	for(y=y0;y<=y1;y++)
 	{
-		OLED_Set_Pos(x0,y);
+		OLED_SetPos(x0,y);
     	for(x=x0;x<=x1;x++)
 		{      
-	    	OLED_WR_Byte(BMP[j++],OLED_DATA);	    	
+	    	OLED_WriteByte(BMP[j++],OLED_DATA);	    	
 		}
 	}
 } 
@@ -536,40 +536,40 @@ OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[])
 void ICACHE_FLASH_ATTR
 OLED_Init(void)
 { 	
-    OLED_WR_Byte(0xAE,OLED_CMD);//--display off
-	OLED_WR_Byte(0x00,OLED_CMD);//---set low column address
-	OLED_WR_Byte(0x10,OLED_CMD);//---set high column address
-	OLED_WR_Byte(0x40,OLED_CMD);//--set start line address  
-	OLED_WR_Byte(0xB0,OLED_CMD);//--set page address
-	OLED_WR_Byte(0x81,OLED_CMD); // contract control
-	OLED_WR_Byte(0xFF,OLED_CMD);//--128   
-	OLED_WR_Byte(0xA1,OLED_CMD);//set segment remap 
-	OLED_WR_Byte(0xA6,OLED_CMD);//--normal / reverse
-	OLED_WR_Byte(0xA8,OLED_CMD);//--set multiplex ratio(1 to 64)
-	OLED_WR_Byte(0x3F,OLED_CMD);//--1/32 duty
-	OLED_WR_Byte(0xC8,OLED_CMD);//Com scan direction
-	OLED_WR_Byte(0xD3,OLED_CMD);//-set display offset
-	OLED_WR_Byte(0x00,OLED_CMD);//
+    OLED_WriteByte(0xAE,OLED_CMD);//--display off
+	OLED_WriteByte(0x00,OLED_CMD);//---set low column address
+	OLED_WriteByte(0x10,OLED_CMD);//---set high column address
+	OLED_WriteByte(0x40,OLED_CMD);//--set start line address  
+	OLED_WriteByte(0xB0,OLED_CMD);//--set page address
+	OLED_WriteByte(0x81,OLED_CMD); // contract control
+	OLED_WriteByte(0xFF,OLED_CMD);//--128   
+	OLED_WriteByte(0xA1,OLED_CMD);//set segment remap 
+	OLED_WriteByte(0xA6,OLED_CMD);//--normal / reverse
+	OLED_WriteByte(0xA8,OLED_CMD);//--set multiplex ratio(1 to 64)
+	OLED_WriteByte(0x3F,OLED_CMD);//--1/32 duty
+	OLED_WriteByte(0xC8,OLED_CMD);//Com scan direction
+	OLED_WriteByte(0xD3,OLED_CMD);//-set display offset
+	OLED_WriteByte(0x00,OLED_CMD);//
 	
-	OLED_WR_Byte(0xD5,OLED_CMD);//set osc division
-	OLED_WR_Byte(0x80,OLED_CMD);//
+	OLED_WriteByte(0xD5,OLED_CMD);//set osc division
+	OLED_WriteByte(0x80,OLED_CMD);//
 	
-	OLED_WR_Byte(0xD8,OLED_CMD);//set area color mode off
-	OLED_WR_Byte(0x05,OLED_CMD);//
+	OLED_WriteByte(0xD8,OLED_CMD);//set area color mode off
+	OLED_WriteByte(0x05,OLED_CMD);//
 	
-	OLED_WR_Byte(0xD9,OLED_CMD);//Set Pre-Charge Period
-	OLED_WR_Byte(0xF1,OLED_CMD);//
+	OLED_WriteByte(0xD9,OLED_CMD);//Set Pre-Charge Period
+	OLED_WriteByte(0xF1,OLED_CMD);//
 	
-	OLED_WR_Byte(0xDA,OLED_CMD);//set com pin configuartion
-	OLED_WR_Byte(0x12,OLED_CMD);//
+	OLED_WriteByte(0xDA,OLED_CMD);//set com pin configuartion
+	OLED_WriteByte(0x12,OLED_CMD);//
 	
-	OLED_WR_Byte(0xDB,OLED_CMD);//set Vcomh
-	OLED_WR_Byte(0x30,OLED_CMD);//
+	OLED_WriteByte(0xDB,OLED_CMD);//set Vcomh
+	OLED_WriteByte(0x30,OLED_CMD);//
 	
-	OLED_WR_Byte(0x8D,OLED_CMD);//set charge pump enable
-	OLED_WR_Byte(0x14,OLED_CMD);//
+	OLED_WriteByte(0x8D,OLED_CMD);//set charge pump enable
+	OLED_WriteByte(0x14,OLED_CMD);//
 	
-	OLED_WR_Byte(0xAF,OLED_CMD);//--turn on oled panel
+	OLED_WriteByte(0xAF,OLED_CMD);//--turn on oled panel
 }  
 
 /******************************************************************************
@@ -585,7 +585,7 @@ OLED_GPIO_Init(void)
     PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDI_U,FUNC_GPIO12);//SCL
 	PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTMS_U,FUNC_GPIO14);//SDA
 	OLED_Init();			//初始化OLED 
-	OLED_Clear_Black(); 
+	OLED_ClearBlack(); 
 }
 
 /******************************************************************************
@@ -597,7 +597,7 @@ OLED_GPIO_Init(void)
 void ICACHE_FLASH_ATTR
 OLED_Demo_String(void)
 {
-	OLED_Clear_Black(); 
+	OLED_ClearBlack(); 
 	OLED_ShowChineseString(40,2,120,6,"これが最最最後のこれが最最最後の");
 	OLED_ShowString(0,4,128,4,"0.96' OLED TEST",16);
     OLED_ShowString(0,6,128,7,"0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST0.96' OLED TEST",8);
@@ -612,7 +612,7 @@ OLED_Demo_String(void)
 void ICACHE_FLASH_ATTR
 OLED_Demo_BMP1(void)
 {
-	OLED_Clear_Black(); 
+	OLED_ClearBlack(); 
 	OLED_DrawBMP(0,0,127,7,BMP3);
 }
 
@@ -625,6 +625,6 @@ OLED_Demo_BMP1(void)
 void ICACHE_FLASH_ATTR
 OLED_Demo_BMP2(void)
 {
-	OLED_Clear_Black(); 
+	OLED_ClearBlack(); 
 	OLED_DrawBMP(0,0,127,7,BMP4);
 }

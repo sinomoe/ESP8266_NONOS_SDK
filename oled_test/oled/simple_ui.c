@@ -5,26 +5,26 @@
 #include "mem.h"
 
 /******************************************************************************
- * FunctionName : UpdateSysBar
+ * FunctionName : UI_UpdateSysBar
  * Description  : 
  * Parameters   : char *string
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-UpdateSysBar(char *string)
+UI_UpdateSysBar(char *string)
 {
-    OLED_Clear_Black_In_Page(SYS_BAR_PAGE);
+    OLED_ClearBlackInPage(SYS_BAR_PAGE);
     OLED_ShowString(0,SYS_BAR_PAGE,127,SYS_BAR_PAGE,string,8);
 }
 
 /******************************************************************************
- * FunctionName : UpdateDHTBar
+ * FunctionName : UI_UpdateDHTBar
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-UpdateDHTBar(void)
+UI_UpdateDHTBar(void)
 {
     dht_read11();
 	char string[128]={0};
@@ -42,13 +42,13 @@ UpdateDHTBar(void)
 }
 
 /******************************************************************************
- * FunctionName : ShowStartUp
+ * FunctionName : UI_ShowStartUp
  * Description  : show startup image
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-ShowStartUp(void)
+UI_ShowStartUp(void)
 {
     OLED_GPIO_Init();
     OLED_Demo_BMP1();

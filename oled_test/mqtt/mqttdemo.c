@@ -18,7 +18,7 @@ mqttConnectedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Connected\r\n");
-	UpdateSysBar("[MQTT]Connected");
+	UI_UpdateSysBar("[MQTT]Connected");
 	MQTT_Subscribe(client, "/topic/0", 0);
 	MQTT_Subscribe(client, "/rgb/1", 0);
 //	MQTT_Subscribe(client, "/mqtt/topic/1", 0);
@@ -36,7 +36,7 @@ mqttDisconnectedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Disconnected\r\n");
-	UpdateSysBar("[MQTT]Disconnected");
+	UI_UpdateSysBar("[MQTT]Disconnected");
 }
 
 /******************************************************************************
@@ -50,7 +50,7 @@ mqttPublishedCb(uint32_t *args)
 {
 	MQTT_Client* client = (MQTT_Client*)args;
 	INFO("MQTT: Published\r\n");
-	UpdateSysBar("[MQTT]Published");
+	UI_UpdateSysBar("[MQTT]Published");
 }
 
 /******************************************************************************
@@ -74,7 +74,7 @@ mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *da
 	dataBuf[data_len] = 0;
 
 	INFO("Receive topic: %s, data: %s \r\n", topicBuf, dataBuf);
-	UpdateSysBar("[MQTT]Received");
+	UI_UpdateSysBar("[MQTT]Received");
 	#ifdef ALLOW_DEAL_MQTT_DATA
 	deal_response(topicBuf,dataBuf);
 	#endif
@@ -91,7 +91,7 @@ mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *da
 void ICACHE_FLASH_ATTR
 MQTTDemo_InitConnection(void)
 {
-	UpdateSysBar("[MQTT]Initializing");
+	UI_UpdateSysBar("[MQTT]Initializing");
 	MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
 	//MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
 	MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);

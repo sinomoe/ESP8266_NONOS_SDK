@@ -7,7 +7,7 @@ os_timer_t DHTDemo_Timer0;
 void ICACHE_FLASH_ATTR
 DHTDemo_Timer0_CallBack(void)
 {
-	UpdateDHTBar();
+	UI_UpdateDHTBar();
 }
 
 void ICACHE_FLASH_ATTR

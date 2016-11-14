@@ -30,11 +30,9 @@
 #include "ets_sys.h"
 #include "driver/uart.h"
 #include "os_type.h"
-#include "wifi.h"
 #include "config.h"
 #include "debug.h"
 #include "user_interface.h"
-#include "mem.h"
 #include "user_config.h"
 #include "simple_ui.h"
 #include "rgbdemo.h"
@@ -90,14 +88,14 @@ user_rf_cal_sector_set(void)
 void user_init(void)
 {
     RGB_PWM_Init();
-    ShowStartUp();
+    UI_ShowStartUp();
 	INFO("\r\nRGB PWM init ...\r\n");
-    UpdateSysBar("[SYS]Initializing");
+    UI_UpdateSysBar("[SYS]Initializing");
 	CFG_Save();
 	uart_init(BIT_RATE_115200, BIT_RATE_115200);
 	os_delay_us(1000000);
 	CFG_Load();
-    UpdateSysBar("[SYS]Loading Config");
+    UI_UpdateSysBar("[SYS]Loading Config");
 	MQTTDemo_InitConnection();
     WIFIDemo_InitConnection();
     DHTDemo_Publish();

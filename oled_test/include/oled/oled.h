@@ -31,32 +31,32 @@
 #define Y_WIDTH 	64	
 
 //OLED¿ØÖÆÓÃº¯Êý
-//void OLED_WR_Byte(unsigned dat,unsigned cmd);
-void ICACHE_FLASH_ATTR OLED_Display_On(void);
-void ICACHE_FLASH_ATTR OLED_Display_Off(void);	   							   		    
+//void OLED_WriteByte(unsigned dat,unsigned cmd);
+void ICACHE_FLASH_ATTR OLED_DispOn(void);
+void ICACHE_FLASH_ATTR OLED_DispOff(void);	   							   		    
 //void ICACHE_FLASH_ATTR OLED_Init(void);
-void ICACHE_FLASH_ATTR OLED_Clear_Black(void);
-void ICACHE_FLASH_ATTR OLED_Clear_White(void);
+void ICACHE_FLASH_ATTR OLED_ClearBlack(void);
+void ICACHE_FLASH_ATTR OLED_ClearWhite(void);
 void ICACHE_FLASH_ATTR OLED_ShowChar(u8 x,u8 y,u8 chr,u8 Char_Size);
 void ICACHE_FLASH_ATTR OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size);
 void ICACHE_FLASH_ATTR OLED_ShowString(u8 x,u8 y,u8 x1,u8 y1,u8 *chr,u8 Char_Size);
-//void ICACHE_FLASH_ATTR OLED_Set_Pos(u8 x, u8 y);
+//void ICACHE_FLASH_ATTR OLED_SetPos(u8 x, u8 y);
 void ICACHE_FLASH_ATTR OLED_ShowChinese(u8 x,u8 y,u8 *s);
 void ICACHE_FLASH_ATTR OLED_ShowChineseString(u8 x,u8 y,u8 x1,u8 y1,u8 *s);
 void ICACHE_FLASH_ATTR OLED_DrawBMP(u8 x0, u8 y0,u8 x1, u8 y1,const u8 BMP[]);
-//void IIC_Start();
-//void IIC_Stop();
-//void Write_IIC_Command(u8 IIC_Command);
-//void Write_IIC_Data(u8 IIC_Data);
-//void Write_IIC_Byte(u8 IIC_Byte);
-//void IIC_Wait_Ack();
+//void OLED_IIC_Start();
+//void OLED_IIC_Stop();
+//void OLED_IIC_WriteCommand(u8 IIC_Command);
+//void OLED_IIC_WriteData(u8 IIC_Data);
+//void OLED_IIC_WriteByte(u8 IIC_Byte);
+//void OLED_IIC_WaitAck();
 void ICACHE_FLASH_ATTR OLED_GPIO_Init(void);
 void ICACHE_FLASH_ATTR OLED_Demo_String(void);
 void ICACHE_FLASH_ATTR OLED_Demo_BMP1(void);
 void ICACHE_FLASH_ATTR OLED_Demo_BMP2(void);
-void ICACHE_FLASH_ATTR OLED_Clear_Black_In_Page(u8 page);
-void ICACHE_FLASH_ATTR OLED_Clear_White_In_Page(u8 page);
-void ICACHE_FLASH_ATTR OLED_Clear_White_In_Area(u8 x,u8 page,u8 x1,u8 page1);
-void ICACHE_FLASH_ATTR OLED_Clear_Black_In_Area(u8 x,u8 page,u8 x1,u8 page1);
+void ICACHE_FLASH_ATTR OLED_ClearBlackInPage(u8 page);
+void ICACHE_FLASH_ATTR OLED_ClearWhiteInPage(u8 page);
+void ICACHE_FLASH_ATTR OLED_ClearWhiteInArea(u8 x,u8 page,u8 x1,u8 page1);
+void ICACHE_FLASH_ATTR OLED_ClearBlackInArea(u8 x,u8 page,u8 x1,u8 page1);
 
 #endif  

@@ -66,12 +66,12 @@ deal_response(char *topicBuf,char* dataBuf)
         FluentColor(&CurRGB,&c2,60);
     }
     os_sprintf(string,"Topic:%s", topicBuf);
-    OLED_Clear_Black_In_Page(0);
+    OLED_ClearBlackInPage(0);
     OLED_ShowString(0,0,127,0,string,8);
 	os_sprintf(string,"Data:%s", dataBuf);
-    OLED_Clear_Black_In_Page(1);
-    OLED_Clear_Black_In_Page(2);
-    OLED_Clear_Black_In_Page(3);
+    OLED_ClearBlackInPage(1);
+    OLED_ClearBlackInPage(2);
+    OLED_ClearBlackInPage(3);
     OLED_ShowString(0,1,127,3,string,8);
     os_free(string);
 }
