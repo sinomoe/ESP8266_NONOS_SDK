@@ -1,6 +1,6 @@
 #include "ui_config.h"
 #include "c_types.h"
-#include "dht.h"
+#include "dhtdemo.h"
 #include "osapi.h"
 #include "mem.h"
 
@@ -29,7 +29,7 @@ UpdateDHTBar(void)
     dht_read11();
 	char string[128]={0};
     uint8_t* DHTData;
-    DHTData=DHTGet();
+    DHTData=DHT_Get();
 	char tempp=(char)DHTData[1];
 	u8 humii=(u8)DHTData[0];
     os_sprintf(string,"TEMP: %d",tempp);

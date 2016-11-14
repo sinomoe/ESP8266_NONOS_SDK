@@ -9,7 +9,6 @@
 #include "user_config.h"
 #include "debug.h"
 
-os_timer_t DHTtimer;
 
 MQTT_Client mqttClient;
 
@@ -140,18 +139,4 @@ MQTTDemoPublish(const u8* topic,const u8* message,int qos,int retain)
 		len++;
 	}
 	MQTT_Publish(&mqttClient, topic, message, len, qos, retain);
-}
-
-void ICACHE_FLASH_ATTR
-DHTtimer_callback(void)
-{
-	UpdateDHTBar();
-}
-
-void ICACHE_FLASH_ATTR
-DHTPublish(void)
-{
-	os_timer_disarm(&DHTtimer);
-	os_timer_setfn(&DHTtimer,(os_timer_func_t *)DHTtimer_callback,NULL);
-	os_timer_arm(&DHTtimer,10000,1);
 }

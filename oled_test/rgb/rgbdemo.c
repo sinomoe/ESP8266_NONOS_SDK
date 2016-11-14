@@ -1,4 +1,3 @@
-#include "rgb.h"
 #include "rgbdemo.h"
 #include "osapi.h"
 #include "debug.h"

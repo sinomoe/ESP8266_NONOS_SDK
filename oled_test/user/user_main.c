@@ -35,7 +35,6 @@
 #include "debug.h"
 #include "user_interface.h"
 #include "mem.h"
-#include "rgb.h"
 #include "demo.h"
 #include "user_config.h"
 #include "simple_ui.h"
@@ -98,7 +97,7 @@ void user_init(void)
 	CFG_Load();
     UpdateSysBar("[SYS]Loading Config");
 	MQTT_Demo();
-    DHTPublish();
+    DHTDemo_Publish();
 	INFO("\r\nSystem started ...\r\n");
 	RGB_Demo();
 	system_update_cpu_freq(160);//set cpu freq,160MHz

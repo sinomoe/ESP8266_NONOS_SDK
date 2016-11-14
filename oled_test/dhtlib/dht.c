@@ -56,7 +56,7 @@ static int dht_readSensor(uint8_t wakeupDelay);
 //
 
 uint8_t* ICACHE_FLASH_ATTR
-DHTGet(void)
+DHT_Get(void)
 {
     data[0]=dht_humidity;
     data[1]=dht_temperature;

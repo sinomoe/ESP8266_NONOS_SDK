@@ -54,7 +54,7 @@
 
 int ICACHE_FLASH_ATTR dht_read11(void);
 
-uint8_t* ICACHE_FLASH_ATTR DHTGet(void);
+uint8_t* ICACHE_FLASH_ATTR DHT_Get(void);
 
 #endif
 //
