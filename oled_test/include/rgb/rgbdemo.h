@@ -6,6 +6,6 @@
 #include "rgb.h"
 
 color* ICACHE_FLASH_ATTR RGBDemo_ColorStructure(u8 red,u8 gre,u8 blu);
-void ICACHE_FLASH_ATTR RGB_Demo();
+void ICACHE_FLASH_ATTR RGBDemo_Init();
 
 #endif

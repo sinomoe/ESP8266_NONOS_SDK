@@ -1,34 +1,11 @@
-#include "demo.h"
-#include "simple_ui.h"
-#include "rgb.h"
-#include "osapi.h"
-#include "mqtt.h"
-#include "config.h"
-#include "mem.h"
-#include "deal_response.h"
-#include "user_config.h"
+#include "mqttdemo.h"
 #include "debug.h"
-
+#include "deal_response.h"
+#include "mem.h"
+#include "config.h"
+#include "simple_ui.h"
 
 MQTT_Client mqttClient;
-
-/******************************************************************************
- * FunctionName : wifiConnectCb
- * Description  : 
- * Parameters   : none
- * Returns      : none
- *******************************************************************************/
-void ICACHE_FLASH_ATTR
-wifiConnectCb(uint8_t status)
-{
-	if(status == STATION_GOT_IP){
-		UpdateSysBar("[WIFI]Connected");
-		MQTT_Connect(&mqttClient);
-	} else {
-		UpdateSysBar("[WIFI]Disconnected");
-		MQTT_Disconnect(&mqttClient);
-	}
-}
 
 /******************************************************************************
  * FunctionName : mqttConnectedCb
@@ -106,13 +83,13 @@ mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *da
 }
 
 /******************************************************************************
- * FunctionName : MQTT_Demo
+ * FunctionName : MQTTDemo_InitConnection
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-MQTT_Demo(void)
+MQTTDemo_InitConnection(void)
 {
 	UpdateSysBar("[MQTT]Initializing");
 	MQTT_InitConnection(&mqttClient, sysCfg.mqtt_host, sysCfg.mqtt_port, sysCfg.security);
@@ -124,14 +101,10 @@ MQTT_Demo(void)
 	MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);
 	MQTT_OnPublished(&mqttClient, mqttPublishedCb);
 	MQTT_OnData(&mqttClient, mqttDataCb);
-
-	UpdateSysBar("[WIFI]Connecting");
-	WIFI_Connect(sysCfg.sta_ssid, sysCfg.sta_pwd, wifiConnectCb);
-	//WIFI_Connect("SSID","PASSWORD", wifiConnectCb);
 }
 
 void ICACHE_FLASH_ATTR
-MQTTDemoPublish(const u8* topic,const u8* message,int qos,int retain)
+MQTTDemo_Publish(const u8* topic,const u8* message,int qos,int retain)
 {
 	u8 len=0,i;
 	for(i=0;message[i]!='\0';i++)

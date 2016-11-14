@@ -69,13 +69,13 @@ RGBDemo_Timer0_CallBack(){
 }  
 
 /******************************************************************************
- * FunctionName : RGB_Demo
+ * FunctionName : RGBDemo_Init
  * Description  : 
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-RGB_Demo()
+RGBDemo_Init()
 {
     os_timer_disarm(&RGBDemo_Timer0);
 	os_timer_setfn(&RGBDemo_Timer0,(os_timer_func_t *)RGBDemo_Timer0_CallBack,NULL);

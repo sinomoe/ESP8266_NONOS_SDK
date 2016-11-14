@@ -35,10 +35,12 @@
 #include "debug.h"
 #include "user_interface.h"
 #include "mem.h"
-#include "demo.h"
 #include "user_config.h"
 #include "simple_ui.h"
 #include "rgbdemo.h"
+#include "mqttdemo.h"
+#include "wifidemo.h"
+
 extern color CurRGB;
 /******************************************************************************
  * FunctionName : user_rf_cal_sector_set
@@ -96,10 +98,11 @@ void user_init(void)
 	os_delay_us(1000000);
 	CFG_Load();
     UpdateSysBar("[SYS]Loading Config");
-	MQTT_Demo();
+	MQTTDemo_InitConnection();
+    WIFIDemo_InitConnection();
     DHTDemo_Publish();
 	INFO("\r\nSystem started ...\r\n");
-	RGB_Demo();
+	RGBDemo_Init();
 	system_update_cpu_freq(160);//set cpu freq,160MHz
 	INFO("\r\nOLED init ...\r\n");
 }

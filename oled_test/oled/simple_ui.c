@@ -34,10 +34,10 @@ UpdateDHTBar(void)
 	u8 humii=(u8)DHTData[0];
     os_sprintf(string,"TEMP: %d",tempp);
     OLED_ShowString(0,DHT_BAR_PAGE,63,DHT_BAR_PAGE,string,8);
-    MQTTDemoPublish("/dht/temp",string,0,0);
+    MQTTDemo_Publish("/dht/temp",string,0,0);
 	os_sprintf(string,"HUMI: %d",humii);
     OLED_ShowString(64,DHT_BAR_PAGE,127,DHT_BAR_PAGE,string,8);
-    MQTTDemoPublish("/dht/humi",string,0,0);
+    MQTTDemo_Publish("/dht/humi",string,0,0);
     os_free(string);
 }
 
