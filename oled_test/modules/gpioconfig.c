@@ -108,12 +108,15 @@ GPIOCON_SetMode(u8 gpionum,u8 mode,u8 pullup)
     }
     if(!mode)
     {
+        /*
         if(gpionum==16)
         {
             gpio16_input_conf();
         }
+        */
         GPIO_DIS_OUTPUT(gpionum);
     }
+    /*
     else
     {
         if(gpionum==16)
@@ -121,19 +124,23 @@ GPIOCON_SetMode(u8 gpionum,u8 mode,u8 pullup)
             gpio16_output_conf();
         }
     }
+    */
     GPIOCON_PullUp(gpionum,pullup);
 }
 
 void ICACHE_FLASH_ATTR
 GPIOCON_WritePin(u8 gpionum,u8 level)
 {
+    /*
     if(gpionum==16)
     {
         gpio16_output_set(level);
         return;
     }
+    */
     GPIO_OUTPUT_SET(GPIO_ID_PIN(gpionum), level);
 } 
+
 
 u8 ICACHE_FLASH_ATTR
 GPIOCON_ReadPin(u8 gpionum)

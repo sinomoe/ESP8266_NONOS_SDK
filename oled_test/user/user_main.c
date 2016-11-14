@@ -39,6 +39,7 @@
 #include "demo.h"
 #include "user_config.h"
 #include "simple_ui.h"
+#include "rgbdemo.h"
 extern color CurRGB;
 /******************************************************************************
  * FunctionName : user_rf_cal_sector_set
@@ -99,7 +100,7 @@ void user_init(void)
 	MQTT_Demo();
     DHTPublish();
 	INFO("\r\nSystem started ...\r\n");
-	OLED_RGB_Demo();
+	RGB_Demo();
 	system_update_cpu_freq(160);//set cpu freq,160MHz
 	INFO("\r\nOLED init ...\r\n");
 }
