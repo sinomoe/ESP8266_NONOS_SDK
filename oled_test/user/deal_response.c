@@ -5,7 +5,7 @@
 #include "rgb.h"
 
 extern color CurRGB;
-extern os_timer_t timer0;
+extern os_timer_t RGBDemo_Timer0;
 
 int os_atoi(char *s)
 {
@@ -29,7 +29,7 @@ deal_response(char *topicBuf,char* dataBuf)
         u8 i,j;
         color c2;
         u8 tempr[4],tempg[4],tempb[4];
-        os_timer_disarm(&timer0);
+        os_timer_disarm(&RGBDemo_Timer0);
         for(i=0,j=0;i<3;i++,j++)
         {
             tempr[j]=dataBuf[i];

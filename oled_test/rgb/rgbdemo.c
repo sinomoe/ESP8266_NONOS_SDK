@@ -3,7 +3,7 @@
 #include "osapi.h"
 #include "debug.h"
 
-os_timer_t timer0;
+os_timer_t RGBDemo_Timer0;
 char zt = 1; 
 extern color CurRGB;
 color color1;
@@ -18,14 +18,13 @@ RGBDemo_ColorStructure(u8 red,u8 gre,u8 blu)
 }
 
 /******************************************************************************
- * FunctionName : timer0_callback
+ * FunctionName : RGBDemo_Timer0_CallBack
  * Description  : auto change aim color
  * Parameters   : none
  * Returns      : none
  *******************************************************************************/
 void ICACHE_FLASH_ATTR
-timer0_callback(){  
-    color c1;
+RGBDemo_Timer0_CallBack(){  
     if(zt == 1)
     {  
 		FluentColor(&CurRGB,RGBDemo_ColorStructure(255,0,0),60);
@@ -79,8 +78,8 @@ timer0_callback(){
 void ICACHE_FLASH_ATTR
 RGB_Demo()
 {
-    os_timer_disarm(&timer0);
-	os_timer_setfn(&timer0,(os_timer_func_t *)timer0_callback,NULL);
-	os_timer_arm(&timer0,3000,1);
+    os_timer_disarm(&RGBDemo_Timer0);
+	os_timer_setfn(&RGBDemo_Timer0,(os_timer_func_t *)RGBDemo_Timer0_CallBack,NULL);
+	os_timer_arm(&RGBDemo_Timer0,3000,1);
 	INFO("\r\nTIMER SET READY\r\n");
 }
